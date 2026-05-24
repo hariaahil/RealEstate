@@ -9,12 +9,10 @@ const nextConfig = {
       },
     ],
   },
-  eslint: {
-    dirs: ['app', 'components', 'lib', 'services', 'hooks', 'types'],
-  },
   typescript: {
     ignoreBuildErrors: false,
   },
+  turbopack: {},
   webpack(config) {
     config.resolve.alias['@'] = path.resolve('./');
     return config;
