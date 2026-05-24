@@ -38,6 +38,7 @@ export type Property = {
   furnishing: Furnishing;
   parking: number;
   created_at: string;
+  image_url?: string;
 };
 
 export type PropertyImage = {

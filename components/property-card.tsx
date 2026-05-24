@@ -3,24 +3,33 @@ import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { Property } from '@/types';
+import type { Property, PropertyImage } from '@/types';
 
 type PropertyCardProps = {
   property: Property;
   agentName: string;
+  images?: PropertyImage[];
 };
 
-export function PropertyCard({ property, agentName }: PropertyCardProps) {
+export function PropertyCard({ property, agentName, images }: PropertyCardProps) {
+  const mainImage = images && images.length > 0 ? images[0].image_url : null;
+  
   return (
     <article className="group overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-2xl">
-      <div className="relative h-64 overflow-hidden">
-        <Image
-          src={`https://res.cloudinary.com/demo/image/upload/v1690000000/property-${property.locality.toLowerCase().replace(/\s+/g, '-')}-1.jpg`}
-          alt={property.title}
-          fill
-          className="object-cover transition duration-700 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
+      <div className="relative h-64 overflow-hidden bg-zinc-100">
+        {mainImage ? (
+          <Image
+            src={mainImage}
+            alt={property.title}
+            fill
+            className="object-cover transition duration-700 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-zinc-400">
+            <span className="text-sm">No image available</span>
+          </div>
+        )}
         <div className="absolute left-4 top-4 flex flex-wrap gap-2">
           {property.verified && <Badge variant="success">Verified</Badge>}
           {property.featured && <Badge variant="outline">Featured</Badge>}

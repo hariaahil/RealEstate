@@ -16,11 +16,17 @@ export function FeaturedCarousel({ properties }: { properties: Property[] }) {
         {properties.map((property) => (
           <article key={property.id} className="overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-2xl">
             <div className="relative h-60 bg-zinc-100">
-              <img
-                src={`https://res.cloudinary.com/demo/image/upload/v1690000000/property-${property.locality.toLowerCase().replace(/\s+/g, '-')}-1.jpg`}
-                alt={property.title}
-                className="h-full w-full object-cover"
-              />
+              {property.image_url ? (
+                <img
+                  src={property.image_url}
+                  alt={property.title}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-zinc-400">
+                  <span className="text-sm">No image available</span>
+                </div>
+              )}
             </div>
             <div className="space-y-3 p-5">
               <p className="text-sm text-zinc-500">{property.locality} • {property.bhk} BHK</p>

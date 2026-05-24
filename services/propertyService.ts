@@ -7,9 +7,12 @@ export async function getProperties(): Promise<Property[]> {
     return [];
   }
   
-  const { data, error } = await supabaseClient!
+  const { data: properties, error } = await supabaseClient!
     .from('properties')
-    .select('*')
+    .select(`
+      *,
+      property_images (image_url)
+    `)
     .order('created_at', { ascending: false });
 
   if (error || !data) {
@@ -17,7 +20,13 @@ export async function getProperties(): Promise<Property[]> {
     return [];
   }
 
-  return data as Property[];
+  // Map the first image to the property's image_url
+  return properties.map((property: any) => ({
+    ...property,
+    image_url: property.property_images && property.property_images.length > 0 
+      ? property.property_images[0].image_url 
+      : undefined
+  })) as Property[];
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
@@ -25,17 +34,26 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
     return null;
   }
 
-  const { data, error } = await supabaseClient!
+  const { data: property, error } = await supabaseClient!
     .from('properties')
-    .select('*')
+    .select(`
+      *,
+      property_images (image_url)
+    `)
     .eq('slug', slug)
     .single();
 
-  if (error || !data) {
+  if (error || !property) {
     return null;
   }
 
-  return data as Property;
+  // Map the first image to the property's image_url
+  return {
+    ...property,
+    image_url: property.property_images && property.property_images.length > 0 
+      ? property.property_images[0].image_url 
+      : undefined
+  } as Property;
 }
 
 export async function getPropertiesByLocality(locality: string): Promise<Property[]> {
@@ -43,9 +61,12 @@ export async function getPropertiesByLocality(locality: string): Promise<Propert
     return [];
   }
 
-  const { data, error } = await supabaseClient!
+  const { data: properties, error } = await supabaseClient!
     .from('properties')
-    .select('*')
+    .select(`
+      *,
+      property_images (image_url)
+    `)
     .eq('locality', locality)
     .order('price', { ascending: true });
 
@@ -53,7 +74,13 @@ export async function getPropertiesByLocality(locality: string): Promise<Propert
     return [];
   }
 
-  return data as Property[];
+  // Map the first image to the property's image_url
+  return properties.map((property: any) => ({
+    ...property,
+    image_url: property.property_images && property.property_images.length > 0 
+      ? property.property_images[0].image_url 
+      : undefined
+  })) as Property[];
 }
 
 export async function getFeaturedProperties(): Promise<Property[]> {
@@ -61,9 +88,12 @@ export async function getFeaturedProperties(): Promise<Property[]> {
     return [];
   }
 
-  const { data, error } = await supabaseClient!
+  const { data: properties, error } = await supabaseClient!
     .from('properties')
-    .select('*')
+    .select(`
+      *,
+      property_images (image_url)
+    `)
     .eq('featured', true)
     .eq('status', 'approved')
     .order('created_at', { ascending: false });
@@ -72,7 +102,13 @@ export async function getFeaturedProperties(): Promise<Property[]> {
     return [];
   }
 
-  return data as Property[];
+  // Map the first image to the property's image_url
+  return properties.map((property: any) => ({
+    ...property,
+    image_url: property.property_images && property.property_images.length > 0 
+      ? property.property_images[0].image_url 
+      : undefined
+  })) as Property[];
 }
 
 export async function getPropertyImages(propertyId: string): Promise<PropertyImage[]> {

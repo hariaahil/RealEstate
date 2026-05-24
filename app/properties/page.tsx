@@ -5,7 +5,8 @@ import { PropertyCard } from '@/components/property-card';
 import { Button } from '@/components/ui/button';
 import { getProperties } from '@/services/propertyService';
 import { getAgents } from '@/services/agentService';
-import type { Property, Agent } from '@/types';
+import { getPropertyImages } from '@/services/propertyService';
+import type { Property, Agent, PropertyImage } from '@/types';
 
 export default async function PropertiesPage() {
   const properties = await getProperties();
@@ -33,10 +34,11 @@ export default async function PropertiesPage() {
 
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {topProperties.length > 0 ? (
-            topProperties.map((property) => {
+            await Promise.all(topProperties.map(async (property) => {
               const agent = agents.find((item) => item.id === property.agent_id);
-              return agent ? <PropertyCard key={property.id} property={property} agentName={agent.name} /> : null;
-            })
+              const images = await getPropertyImages(property.id);
+              return agent ? <PropertyCard key={property.id} property={property} agentName={agent.name} images={images} /> : null;
+            }))
           ) : (
             <div className="col-span-full rounded-[2.5rem] bg-white p-6 text-center shadow-soft sm:p-8 lg:p-14">
               <p className="text-zinc-600">No properties available yet.</p>
