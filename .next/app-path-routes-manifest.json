@@ -1,0 +1,18 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/agents/route": "/api/agents",
+  "/api/favorites/route": "/api/favorites",
+  "/api/inquiries/route": "/api/inquiries",
+  "/api/properties/route": "/api/properties",
+  "/dashboard/admin/page": "/dashboard/admin",
+  "/dashboard/agent/[id]/edit/page": "/dashboard/agent/[id]/edit",
+  "/dashboard/agent/new/page": "/dashboard/agent/new",
+  "/dashboard/agent/page": "/dashboard/agent",
+  "/login/page": "/login",
+  "/page": "/",
+  "/properties/[locality]/[slug]/page": "/properties/[locality]/[slug]",
+  "/properties/[locality]/page": "/properties/[locality]",
+  "/properties/page": "/properties",
+  "/sitemap.xml/route": "/sitemap.xml"
+}

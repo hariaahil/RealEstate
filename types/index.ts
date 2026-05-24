@@ -13,8 +13,10 @@ export type Agent = {
 };
 
 export type PropertyStatus = 'pending' | 'approved' | 'rejected';
-export type PropertyType = 'Apartment' | 'Villa' | 'Plot' | 'Office' | 'Retail';
+export type PropertyType = 'Apartment' | 'Villa' | 'Plot' | 'Office' | 'Retail' | 'PG' | 'Commercial';
+export type ListingCategory = 'sale' | 'rent';
 export type Furnishing = 'Furnished' | 'Semi-Furnished' | 'Unfurnished';
+export type TenantPreference = 'Family' | 'Bachelors' | 'Couples' | 'Professionals' | 'Students';
 
 export type Property = {
   id: string;
@@ -22,6 +24,7 @@ export type Property = {
   slug: string;
   description: string;
   price: number;
+  listing_category: ListingCategory;
   property_type: PropertyType;
   bhk: number;
   sqft: number;
@@ -36,7 +39,18 @@ export type Property = {
   status: PropertyStatus;
   agent_id: string;
   furnishing: Furnishing;
-  parking: number;
+  deposit_amount?: number;
+  monthly_rent?: number;
+  available_from?: string;
+  tenant_preference?: TenantPreference[];
+  pets_allowed?: boolean;
+  parking_available?: boolean;
+  property_age?: string;
+  bathrooms?: number;
+  balcony?: number;
+  occupied?: boolean;
+  views?: number;
+  owner_contact?: string;
   created_at: string;
   image_url?: string;
 };
@@ -65,6 +79,29 @@ export type Inquiry = {
   inquiry_status: InquiryStatus;
   assigned_agent_id: string;
   created_at: string;
+};
+
+export type RentalInquiry = {
+  id: string;
+  property_id: string;
+  tenant_name: string;
+  tenant_phone: string;
+  occupation: string;
+  budget: number;
+  family_type: TenantPreference;
+  move_in_date: string;
+  assigned_agent_id: string;
+  inquiry_status: InquiryStatus;
+  created_at: string;
+};
+
+export type ContactUnlock = {
+  id: string;
+  user_id: string;
+  property_id: string;
+  amount_paid: number;
+  payment_status: 'pending' | 'paid' | 'failed';
+  unlocked_at: string;
 };
 
 export type Favorite = {

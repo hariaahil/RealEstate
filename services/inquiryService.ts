@@ -1,6 +1,6 @@
 import { supabaseClient } from '@/lib/supabaseClient';
 import { sampleInquiries } from '@/lib/sampleData';
-import type { Inquiry } from '@/types';
+import type { Inquiry, InquiryStatus } from '@/types';
 
 export async function saveInquiry(inquiry: Omit<Inquiry, 'id' | 'created_at'>): Promise<Inquiry | null> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -13,21 +13,81 @@ export async function saveInquiry(inquiry: Omit<Inquiry, 'id' | 'created_at'>): 
 
   const { data, error } = await supabaseClient!.from('inquiries').insert([inquiry]).select().single();
   if (error || !data) {
+    console.error('Error saving inquiry:', error);
     return null;
   }
 
   return data as Inquiry;
 }
 
-export async function getInquiries(): Promise<Inquiry[]> {
+export async function getInquiries(agentId?: string, status?: InquiryStatus): Promise<Inquiry[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    return sampleInquiries;
+    return sampleInquiries
+      .filter((inquiry) => (agentId ? inquiry.assigned_agent_id === agentId : true))
+      .filter((inquiry) => (status ? inquiry.inquiry_status === status : true));
   }
 
-  const { data, error } = await supabaseClient!.from('inquiries').select('*').order('created_at', { ascending: false });
+  let query = supabaseClient!.from('inquiries').select('*').order('created_at', { ascending: false });
+
+  if (agentId) {
+    query = query.eq('assigned_agent_id', agentId);
+  }
+
+  if (status) {
+    query = query.eq('inquiry_status', status);
+  }
+
+  const { data, error } = await query;
   if (error || !data) {
+    console.error('Error getting inquiries:', error);
     return sampleInquiries;
   }
 
   return data as Inquiry[];
+}
+
+export async function updateInquiryStatus(inquiryId: string, status: InquiryStatus): Promise<Inquiry | null> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    const inquiry = sampleInquiries.find((item) => item.id === inquiryId);
+    if (!inquiry) return null;
+
+    return { ...inquiry, inquiry_status: status };
+  }
+
+  const { data, error } = await supabaseClient!
+    .from('inquiries')
+    .update({ inquiry_status: status })
+    .eq('id', inquiryId)
+    .select()
+    .single();
+
+  if (error || !data) {
+    console.error('Error updating inquiry status:', error);
+    return null;
+  }
+
+  return data as Inquiry;
+}
+
+export async function assignInquiryAgent(inquiryId: string, agentId: string): Promise<Inquiry | null> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    const inquiry = sampleInquiries.find((item) => item.id === inquiryId);
+    if (!inquiry) return null;
+
+    return { ...inquiry, assigned_agent_id: agentId };
+  }
+
+  const { data, error } = await supabaseClient!
+    .from('inquiries')
+    .update({ assigned_agent_id: agentId })
+    .eq('id', inquiryId)
+    .select()
+    .single();
+
+  if (error || !data) {
+    console.error('Error assigning inquiry agent:', error);
+    return null;
+  }
+
+  return data as Inquiry;
 }

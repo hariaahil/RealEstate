@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { sampleAgents } from '@/lib/sampleData';
 import { InquiryForm } from '@/components/inquiry-form';
-import { Button } from '@/components/ui/button';
+import { PropertyCard } from '@/components/property-card';
 import { PropertyGallery } from '@/components/property-gallery';
-import { getPropertyBySlug } from '@/services/propertyService';
+import { FavoriteButton } from '@/components/favorite-button';
+import { RecentlyViewed } from '@/components/recently-viewed';
+import { getPropertyBySlug, getPropertyImages, getPropertyVideos, getSimilarProperties } from '@/services/propertyService';
 import { getAgents } from '@/services/agentService';
-import { getPropertyImages } from '@/services/propertyService';
-import { getPropertyVideos } from '@/services/propertyService';
 import type { Property, Agent, PropertyImage, PropertyVideo } from '@/types';
 
 export default async function PropertyDetailsPage({ params }: any) {
@@ -28,6 +28,17 @@ export default async function PropertyDetailsPage({ params }: any) {
   const agent = agents.find((item) => item.id === property.agent_id);
   const images = await getPropertyImages(property.id);
   const videos = await getPropertyVideos(property.id);
+  const similarProperties = await getSimilarProperties(property);
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const currentProperty = {
+    id: property.id,
+    title: property.title,
+    locality: property.locality,
+    city: property.city,
+    slug: property.slug,
+    image_url: images[0]?.image_url,
+    price: property.price,
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
@@ -38,6 +49,17 @@ export default async function PropertyDetailsPage({ params }: any) {
               <div>
                 <p className="text-sm uppercase tracking-[0.3em] text-brand-600">{property.locality}</p>
                 <h1 className="mt-2 text-2xl font-semibold text-zinc-950 sm:text-3xl lg:text-4xl">{property.title}</h1>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <FavoriteButton propertyId={property.id} />
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(`Check out this property: ${property.title} in ${property.locality}. View it here: ${appUrl}/properties/${property.locality.toLowerCase().replace(/\s+/g, '-')}/${property.slug}`)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white px-4 text-xs sm:h-12 sm:text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"
+                  >
+                    Share listing
+                  </a>
+                </div>
               </div>
               <div className="rounded-3xl bg-zinc-50 px-5 py-3 text-sm font-semibold text-zinc-800">{property.property_type}</div>
             </div>
@@ -99,21 +121,22 @@ export default async function PropertyDetailsPage({ params }: any) {
                       </div>
                     </div>
                     <p className="text-sm leading-6 text-zinc-600">{agent.bio}</p>
-                    <div className="grid gap-3">
-                      <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 text-xs sm:h-12 sm:text-sm font-semibold text-white transition hover:bg-emerald-700">
-                        WhatsApp agent
-                      </a>
-                      <a href={`tel:${agent.phone}`} className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-xs sm:h-12 sm:text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100">
-                        Call agent
-                      </a>
+                            <div className="grid gap-3">
+                        <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 text-xs sm:h-12 sm:text-sm font-semibold text-white transition hover:bg-emerald-700">
+                          WhatsApp agent
+                        </a>
+                        <a href={`tel:${agent.phone}`} className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-xs sm:h-12 sm:text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100">
+                          Call agent
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                ) : (
+                  ) : (
                   <p className="text-sm text-zinc-600">Agent information not available.</p>
                 )}
               </div>
 
               <InquiryForm propertyId={property.id} agentId={property.agent_id} />
+              <RecentlyViewed current={currentProperty} />
             </div>
           </div>
 
@@ -126,6 +149,32 @@ export default async function PropertyDetailsPage({ params }: any) {
             </div>
           )}
         </div>
+
+        {similarProperties.length > 0 && (
+          <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Similar properties</p>
+                <h2 className="mt-3 text-2xl font-semibold text-zinc-950">You may also like</h2>
+              </div>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {await Promise.all(similarProperties.map(async (property) => {
+                const agent = agents.find((item) => item.id === property.agent_id);
+                const images = await getPropertyImages(property.id);
+                return agent ? (
+                  <PropertyCard
+                    key={property.id}
+                    property={property}
+                    agentName={agent.name}
+                    agentWhatsapp={agent.whatsapp}
+                    images={images}
+                  />
+                ) : null;
+              }))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

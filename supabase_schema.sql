@@ -22,7 +22,8 @@ create table if not exists public.properties (
   slug text unique not null,
   description text,
   price numeric not null,
-  property_type text check (property_type in ('Apartment', 'Villa', 'Plot', 'Office', 'Retail')),
+  listing_category text default 'sale' check (listing_category in ('sale', 'rent')),
+  property_type text check (property_type in ('Apartment', 'Villa', 'Plot', 'Office', 'Retail', 'PG', 'Commercial')),
   bhk integer,
   sqft integer,
   locality text not null,
@@ -36,6 +37,18 @@ create table if not exists public.properties (
   status text default 'pending' check (status in ('pending', 'approved', 'rejected')),
   agent_id uuid references public.agents(id),
   furnishing text check (furnishing in ('Furnished', 'Semi-Furnished', 'Unfurnished')),
+  monthly_rent numeric,
+  deposit_amount numeric,
+  available_from date,
+  tenant_preference text[],
+  pets_allowed boolean default false,
+  parking_available boolean default false,
+  property_age text,
+  bathrooms integer,
+  balcony integer,
+  occupied boolean default false,
+  views integer default 0,
+  owner_contact text,
   parking integer,
   created_at timestamp with time zone default timezone('utc'::text, now())
 );
@@ -78,6 +91,31 @@ create table if not exists public.favorites (
   unique(user_id, property_id)
 );
 
+-- 7. Create Contact Unlocks Table
+create table if not exists public.contact_unlocks (
+  id uuid default uuid_generate_v4() primary key,
+  user_id text not null,
+  property_id uuid references public.properties(id) on delete cascade,
+  amount_paid numeric not null,
+  payment_status text default 'pending' check (payment_status in ('pending', 'paid', 'failed')),
+  unlocked_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+-- 8. Create Rental Inquiries Table
+create table if not exists public.rental_inquiries (
+  id uuid default uuid_generate_v4() primary key,
+  property_id uuid references public.properties(id),
+  tenant_name text not null,
+  tenant_phone text not null,
+  occupation text not null,
+  budget numeric,
+  family_type text check (family_type in ('Family', 'Bachelors', 'Couples', 'Professionals', 'Students')),
+  move_in_date date,
+  assigned_agent_id uuid references public.agents(id),
+  inquiry_status text default 'new' check (inquiry_status in ('new', 'contacted', 'qualified', 'closed')),
+  created_at timestamp with time zone default timezone('utc'::text, now())
+);
+
 -- Enable Row Level Security (RLS)
 alter table public.agents enable row level security;
 alter table public.properties enable row level security;
@@ -85,6 +123,8 @@ alter table public.property_images enable row level security;
 alter table public.property_videos enable row level security;
 alter table public.inquiries enable row level security;
 alter table public.favorites enable row level security;
+alter table public.contact_unlocks enable row level security;
+alter table public.rental_inquiries enable row level security;
 
 -- Create Policies to allow public read access (for this demo)
 create policy "Allow public read access to agents" on public.agents for select using (true);
@@ -95,6 +135,10 @@ create policy "Allow public insert to inquiries" on public.inquiries for insert 
 create policy "Allow public read access to favorites" on public.favorites for select using (true);
 create policy "Allow public insert to favorites" on public.favorites for insert with check (true);
 create policy "Allow public delete from favorites" on public.favorites for delete using (true);
+create policy "Allow public insert to contact unlocks" on public.contact_unlocks for insert with check (true);
+create policy "Allow public read access to contact unlocks" on public.contact_unlocks for select using (true);
+create policy "Allow public insert to rental inquiries" on public.rental_inquiries for insert with check (true);
+create policy "Allow public read access to rental inquiries" on public.rental_inquiries for select using (true);
 
 -- Optional: Allow public write for demo purposes (Remove in production)
 create policy "Allow public insert to agents" on public.agents for insert with check (true);

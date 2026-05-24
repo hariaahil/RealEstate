@@ -1,10 +1,22 @@
 import Link from 'next/link';
-import { sampleProperties, sampleInquiries } from '@/lib/sampleData';
+import { redirect } from 'next/navigation';
+import { createServerSupabase } from '@/lib/supabaseClient';
+import { sampleProperties } from '@/lib/sampleData';
+import { getInquiries } from '@/services/inquiryService';
 import { Button } from '@/components/ui/button';
+import { InquiryStatusControl } from '@/components/inquiry/inquiry-status-control';
 
-export default function AgentDashboardPage() {
-  const agentProperties = sampleProperties.filter((property) => property.agent_id === 'agent-asha');
-  const agentLeads = sampleInquiries.filter((inquiry) => inquiry.assigned_agent_id === 'agent-asha');
+export default async function AgentDashboardPage() {
+  const supabase = createServerSupabase();
+  const session = await supabase?.auth.getSession();
+
+  if (!session?.data.session) {
+    redirect('/login');
+  }
+
+  const agentId = session.data.session.user.id;
+  const agentProperties = sampleProperties.filter((property) => property.agent_id === agentId);
+  const agentLeads = await getInquiries(agentId);
 
   return (
     <div className="mx-auto max-w-7xl px-6 pb-16 pt-10 lg:px-8">
@@ -16,7 +28,9 @@ export default function AgentDashboardPage() {
               <h1 className="mt-3 text-4xl font-semibold text-zinc-950">Manage your Hyderabad listings and leads.</h1>
             </div>
             <div className="flex flex-wrap gap-4">
-              <Button>New property</Button>
+              <Link href="/dashboard/agent/new" className="inline-flex h-12 items-center justify-center rounded-full border border-zinc-200 px-6 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-50">
+                New property
+              </Link>
               <Link href="/properties" className="inline-flex h-12 items-center justify-center rounded-full border border-zinc-200 px-6 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-50">
                 View live listings
               </Link>
@@ -80,6 +94,7 @@ export default function AgentDashboardPage() {
                   <p className="font-semibold text-zinc-900">{inquiry.buyer_name}</p>
                   <p className="text-sm text-zinc-600">{inquiry.message}</p>
                   <p className="mt-2 text-sm text-zinc-500">{inquiry.buyer_phone} • {inquiry.inquiry_status}</p>
+                  <InquiryStatusControl inquiry={inquiry} />
                 </div>
               ))}
             </div>

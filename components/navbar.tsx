@@ -45,6 +45,9 @@ export function Navbar() {
           <Link href="/properties" className="inline-flex h-9 items-center justify-center rounded-full border border-zinc-200 px-3 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-10 sm:px-4 sm:text-sm">
             View Listings
           </Link>
+          <Link href="/login" className="inline-flex h-9 items-center justify-center rounded-full border border-zinc-200 px-3 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-10 sm:px-4 sm:text-sm">
+            Login
+          </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 lg:hidden"

@@ -1,7 +1,31 @@
-import { sampleAgents, sampleProperties, sampleInquiries } from '@/lib/sampleData';
+import { redirect } from 'next/navigation';
+import { createServerSupabase } from '@/lib/supabaseClient';
+import { sampleAgents, sampleProperties } from '@/lib/sampleData';
+import { getInquiries } from '@/services/inquiryService';
 import { Button } from '@/components/ui/button';
 
-export default function AdminDashboardPage() {
+export default async function AdminDashboardPage() {
+  const supabase = createServerSupabase();
+  const session = await supabase?.auth.getSession();
+
+  if (!session?.data.session) {
+    redirect('/login');
+  }
+
+  const userRole = session.data.session.user.app_metadata?.role as string | undefined;
+  if (userRole !== 'admin') {
+    redirect('/login');
+  }
+
+  const inquiries = await getInquiries();
+  const counts = inquiries.reduce(
+    (acc, inquiry) => ({
+      ...acc,
+      [inquiry.inquiry_status]: acc[inquiry.inquiry_status] + 1,
+    }),
+    { new: 0, contacted: 0, qualified: 0, closed: 0 }
+  );
+
   return (
     <div className="mx-auto max-w-7xl px-6 pb-16 pt-10 lg:px-8">
       <div className="space-y-8">
@@ -26,33 +50,35 @@ export default function AdminDashboardPage() {
           </div>
           <div className="rounded-[2rem] bg-white p-6 shadow-soft">
             <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Leads</p>
-            <p className="mt-4 text-4xl font-semibold text-zinc-950">{sampleInquiries.length}</p>
+            <p className="mt-4 text-4xl font-semibold text-zinc-950">{inquiries.length}</p>
           </div>
         </div>
 
         <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Approval queue</p>
-              <h2 className="mt-3 text-2xl font-semibold text-zinc-950">Pending property submissions</h2>
+              <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Lead dashboard</p>
+              <h2 className="mt-3 text-2xl font-semibold text-zinc-950">Lead status overview</h2>
             </div>
-            <Button variant="ghost" size="sm">Manage agents</Button>
+            <Button variant="ghost" size="sm">View all leads</Button>
           </div>
-          <div className="mt-8 space-y-4">
-            {sampleProperties.slice(0, 3).map((property) => (
-              <div key={property.id} className="rounded-3xl border border-zinc-200 p-5">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="font-semibold text-zinc-900">{property.title}</p>
-                    <p className="text-sm text-zinc-500">{property.locality} • {property.property_type}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Button variant="outline" size="sm">Reject</Button>
-                    <Button size="sm">Approve</Button>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">New</p>
+              <p className="mt-4 text-3xl font-semibold text-zinc-950">{counts.new}</p>
+            </div>
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Contacted</p>
+              <p className="mt-4 text-3xl font-semibold text-zinc-950">{counts.contacted}</p>
+            </div>
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Qualified</p>
+              <p className="mt-4 text-3xl font-semibold text-zinc-950">{counts.qualified}</p>
+            </div>
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Closed</p>
+              <p className="mt-4 text-3xl font-semibold text-zinc-950">{counts.closed}</p>
+            </div>
           </div>
         </div>
       </div>

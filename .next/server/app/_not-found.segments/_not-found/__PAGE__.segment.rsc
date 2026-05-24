@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/_next/static/chunks/0xtaygir51bos.js","/_next/static/chunks/017-y.i-8_or2.js","/_next/static/chunks/0d3shmwh5_nmn.js","/_next/static/chunks/1523-b7ta6and.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex min-h-[70vh] flex-col items-center justify-center gap-6 px-6 text-center","children":[["$","p",null,{"className":"text-sm uppercase tracking-[0.3em] text-brand-600","children":"Page not found"}],["$","h1",null,{"className":"text-4xl font-semibold text-zinc-950","children":"We couldn’t find that page"}],["$","p",null,{"className":"max-w-xl text-zinc-600","children":"The page you are looking for is not available. Please return to the homepage or explore property listings."}],["$","a",null,{"href":"/","className":"inline-flex rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-700","children":"Return home"}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"gEbUQ2NGguwxRng2La7cM"}
+4:null

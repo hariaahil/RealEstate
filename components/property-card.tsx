@@ -3,16 +3,19 @@ import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { FavoriteButton } from '@/components/favorite-button';
 import type { Property, PropertyImage } from '@/types';
 
 type PropertyCardProps = {
   property: Property;
   agentName: string;
+  agentWhatsapp?: string;
   images?: PropertyImage[];
 };
 
-export function PropertyCard({ property, agentName, images }: PropertyCardProps) {
+export function PropertyCard({ property, agentName, agentWhatsapp, images }: PropertyCardProps) {
   const mainImage = images && images.length > 0 ? images[0].image_url : null;
+  const whatsappNumber = agentWhatsapp ? agentWhatsapp.replace(/\D/g, '') : '919000000000';
   
   return (
     <article className="group overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-2xl">
@@ -50,11 +53,12 @@ export function PropertyCard({ property, agentName, images }: PropertyCardProps)
           <span>{agentName}</span>
         </div>
         <div className="flex flex-wrap items-center gap-3">
+          <FavoriteButton propertyId={property.id} />
           <Link href={`/properties/${property.locality.toLowerCase().replace(/\s+/g, '-')}/${property.slug}`} className="text-sm font-semibold text-brand-600 hover:text-brand-700">
             View details
           </Link>
           <a
-            href={`https://wa.me/${property.agent_id === 'agent-asha' ? '919123456789' : '919876543210'}?text=Hi%20HydPropertyHub,%20I'm%20interested%20in%20${encodeURIComponent(property.title)}`}
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi HydPropertyHub, I'm interested in ${property.title}`)}`}
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-200 px-4 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"
