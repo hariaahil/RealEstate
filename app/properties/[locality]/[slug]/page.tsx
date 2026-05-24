@@ -4,8 +4,9 @@ import { InquiryForm } from '@/components/inquiry-form';
 import { Button } from '@/components/ui/button';
 import { PropertyGallery } from '@/components/property-gallery';
 
-export default function PropertyDetailsPage({ params }: any) {
-  const property = sampleProperties.find((item) => item.slug === params.slug);
+export default async function PropertyDetailsPage({ params }: any) {
+  const resolvedParams = await params;
+  const property = sampleProperties.find((item) => item.slug === resolvedParams.slug);
   if (!property) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-7xl items-center justify-center px-6 py-20 text-center text-zinc-700">
