@@ -137,6 +137,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/api/contact-unlocks/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/contact-unlocks">> = Specific
+  const handler = {} as typeof import("../../app/api/contact-unlocks/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/api/favorites/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/favorites">> = Specific
@@ -159,6 +168,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/properties">> = Specific
   const handler = {} as typeof import("../../app/api/properties/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/rental-inquiries/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/rental-inquiries">> = Specific
+  const handler = {} as typeof import("../../app/api/rental-inquiries/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

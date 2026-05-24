@@ -39,6 +39,7 @@ export type Property = {
   status: PropertyStatus;
   agent_id: string;
   furnishing: Furnishing;
+  parking?: number;
   deposit_amount?: number;
   monthly_rent?: number;
   available_from?: string;

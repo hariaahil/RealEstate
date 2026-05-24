@@ -74,6 +74,12 @@
       "namedRegex": "^/api/agents(?:/)?$"
     },
     {
+      "page": "/api/contact-unlocks",
+      "regex": "^/api/contact\\-unlocks(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/contact\\-unlocks(?:/)?$"
+    },
+    {
       "page": "/api/favorites",
       "regex": "^/api/favorites(?:/)?$",
       "routeKeys": {},
@@ -90,6 +96,12 @@
       "regex": "^/api/properties(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/properties(?:/)?$"
+    },
+    {
+      "page": "/api/rental-inquiries",
+      "regex": "^/api/rental\\-inquiries(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/rental\\-inquiries(?:/)?$"
     },
     {
       "page": "/dashboard/admin",

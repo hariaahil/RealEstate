@@ -57,7 +57,7 @@ function buildFormState(property?: Property) {
     city: property?.city ?? 'Hyderabad',
     address_approx: property?.address_approx ?? '',
     furnishing: property?.furnishing ?? 'Semi-Furnished',
-    parking: property?.parking.toString() ?? '1',
+    parking: (property?.parking ?? 1).toString(),
   };
 }
 

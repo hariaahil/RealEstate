@@ -1,6 +1,6 @@
 import { supabaseClient } from '@/lib/supabaseClient';
 import { sampleProperties, samplePropertyImages, samplePropertyVideos } from '@/lib/sampleData';
-import type { Property, PropertyImage, PropertyVideo } from '@/types';
+import type { Property, PropertyImage, PropertyVideo, TenantPreference } from '@/types';
 
 function isSupabaseConfigured() {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -44,7 +44,7 @@ export type PropertyQueryOptions = {
   availableFrom?: string;
   bathrooms?: number;
   balcony?: number;
-  tenantPreference?: string;
+  tenantPreference?: TenantPreference;
 };
 
 export async function getProperties(): Promise<Property[]> {
@@ -216,7 +216,7 @@ export async function getPropertiesPage(options: PropertyQueryOptions = {}): Pro
   }
 
   if (options.tenantPreference) {
-    query.cs('tenant_preference', [options.tenantPreference]);
+    query.contains('tenant_preference', [options.tenantPreference]);
   }
 
   switch (options.sort) {
