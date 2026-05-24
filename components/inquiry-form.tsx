@@ -36,7 +36,7 @@ export function InquiryForm({ propertyId, agentId }: InquiryFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-soft">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-[2rem] border border-zinc-200 bg-white p-4 shadow-soft sm:p-5">
       <div>
         <p className="text-sm font-semibold text-zinc-900">Contact the assigned agent</p>
         <p className="mt-2 text-sm text-zinc-600">Send your details and our team will connect you shortly.</p>

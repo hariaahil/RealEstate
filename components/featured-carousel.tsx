@@ -8,7 +8,7 @@ export function FeaturedCarousel({ properties }: { properties: Property[] }) {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm uppercase tracking-[0.25em] text-brand-600">Featured listings</p>
-          <h2 className="text-3xl font-semibold text-zinc-950">Premium Hyderabad homes.</h2>
+          <h2 className="text-2xl font-semibold text-zinc-950 sm:text-3xl">Premium Hyderabad homes.</h2>
         </div>
       </div>
 

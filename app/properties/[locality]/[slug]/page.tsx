@@ -23,14 +23,14 @@ export default async function PropertyDetailsPage({ params }: any) {
   const videos = samplePropertyVideos.filter((video) => video.property_id === property.id);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 pb-16 pt-10 lg:px-8">
-      <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
+      <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="space-y-10">
-          <div className="space-y-4 rounded-[2.5rem] bg-white p-8 shadow-soft">
+          <div className="space-y-4 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-sm uppercase tracking-[0.3em] text-brand-600">{property.locality}</p>
-                <h1 className="mt-2 text-4xl font-semibold text-zinc-950">{property.title}</h1>
+                <h1 className="mt-2 text-2xl font-semibold text-zinc-950 sm:text-3xl lg:text-4xl">{property.title}</h1>
               </div>
               <div className="rounded-3xl bg-zinc-50 px-5 py-3 text-sm font-semibold text-zinc-800">{property.property_type}</div>
             </div>
@@ -52,12 +52,12 @@ export default async function PropertyDetailsPage({ params }: any) {
 
           <div className="grid gap-6 lg:grid-cols-[1.8fr_1fr]">
             <div className="space-y-6">
-              <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
+              <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
                 <PropertyGallery images={images} />
               </div>
 
-              <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
-                <h2 className="text-2xl font-semibold text-zinc-950">Property details</h2>
+              <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
+                <h2 className="text-xl font-semibold text-zinc-950 sm:text-2xl">Property details</h2>
                 <p className="mt-4 text-zinc-600">{property.description}</p>
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                   {property.amenities.map((amenity) => (
@@ -68,8 +68,8 @@ export default async function PropertyDetailsPage({ params }: any) {
                 </div>
               </div>
 
-              <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
-                <h2 className="text-2xl font-semibold text-zinc-950">Nearby landmarks</h2>
+              <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
+                <h2 className="text-xl font-semibold text-zinc-950 sm:text-2xl">Nearby landmarks</h2>
                 <ul className="mt-5 space-y-3 text-sm text-zinc-600">
                   <li>• Premium workspaces at Hitech City</li>
                   <li>• Top schools and curated retail</li>
@@ -78,12 +78,12 @@ export default async function PropertyDetailsPage({ params }: any) {
               </div>
             </div>
             <div className="space-y-6">
-              <div className="rounded-[2.5rem] bg-white p-8 text-zinc-950 shadow-soft">
-                <h3 className="text-xl font-semibold">Assigned advisor</h3>
+              <div className="rounded-[2.5rem] bg-white p-6 sm:p-8 text-zinc-950 shadow-soft">
+                <h3 className="text-lg font-semibold sm:text-xl">Assigned advisor</h3>
                 {agent ? (
                   <div className="mt-6 space-y-3">
                     <div className="flex items-center gap-4">
-                      <div className="relative h-16 w-16 overflow-hidden rounded-3xl bg-zinc-100">
+                      <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-3xl bg-zinc-100">
                         <Image src={agent.profile_image} alt={agent.name} fill className="object-cover" />
                       </div>
                       <div>
@@ -93,10 +93,10 @@ export default async function PropertyDetailsPage({ params }: any) {
                     </div>
                     <p className="text-sm leading-6 text-zinc-600">{agent.bio}</p>
                     <div className="grid gap-3">
-                      <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="inline-flex h-12 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white transition hover:bg-emerald-700">
+                      <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 text-xs sm:h-12 sm:text-sm font-semibold text-white transition hover:bg-emerald-700">
                         WhatsApp agent
                       </a>
-                      <a href={`tel:${agent.phone}`} className="inline-flex h-12 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100">
+                      <a href={`tel:${agent.phone}`} className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-xs sm:h-12 sm:text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100">
                         Call agent
                       </a>
                     </div>
@@ -111,10 +111,10 @@ export default async function PropertyDetailsPage({ params }: any) {
           </div>
 
           {videos.length > 0 && (
-            <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
-              <h2 className="text-2xl font-semibold text-zinc-950">Video walkthrough</h2>
+            <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
+              <h2 className="text-xl font-semibold text-zinc-950 sm:text-2xl">Video walkthrough</h2>
               <div className="mt-6 overflow-hidden rounded-[1.8rem] border border-zinc-200">
-                <iframe src={videos[0].video_url} title="Video walkthrough" className="h-96 w-full" />
+                <iframe src={videos[0].video_url} title="Video walkthrough" className="h-64 sm:h-80 w-full" />
               </div>
             </div>
           )}

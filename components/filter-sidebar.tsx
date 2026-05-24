@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 
 export function FilterSidebar() {
   return (
-    <aside className="space-y-5 rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-soft">
+    <aside className="space-y-4 rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-soft sm:p-6">
       <div>
         <p className="text-sm font-semibold text-zinc-900">Filter Listings</p>
         <p className="mt-2 text-sm text-zinc-600">Tailor search by locality, budget and size.</p>
