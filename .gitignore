@@ -2,7 +2,7 @@
 # Dependencies
 node_modules/
 
-# Build outputs
+# Build artifacts
 dist/
 build/
 .next/
@@ -19,6 +19,9 @@ out/
 *.swp
 *.swo
 
+# Logs
+*.log
+
 # Python
 __pycache__/
 *.pyc
@@ -29,18 +32,20 @@ env/
 venv/
 .venv/
 pip-log.txt
-pip-selfcheck.json
-*.so
-.DS_Store
-Thumbs.db
+pip-delete-this-directory.txt
 
-# Logs
-*.log
-
-# Coverage
+# Coverage reports
 coverage/
 htmlcov/
 .coverage
+
+# Testing
+.nyc_output/
+coverage-final.json
+
+# OS generated files
+.DS_Store
+Thumbs.db
 
 # Temporary files
 *.tmp
