@@ -32,6 +32,9 @@ export default async function HomePage() {
               <Link href="/properties" className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 px-5 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-12 sm:px-6">
                 Browse all properties
               </Link>
+              <Link href="/rent" className="inline-flex h-11 items-center justify-center rounded-full border border-emerald-600 bg-emerald-50 px-5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 sm:h-12 sm:px-6">
+                Browse premium rentals
+              </Link>
             </div>
           </div>
           <div className="space-y-5 rounded-[2rem] bg-zinc-950 p-6 text-white shadow-soft sm:p-8">
