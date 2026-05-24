@@ -1,53 +1,50 @@
 ```
-# Dependencies
-node_modules/
-
-# Build artifacts
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
 dist/
 build/
-.next/
-out/
+*.out
 
-# Environment variables
+# Dependencies
+node_modules/
+venv/
+.venv/
 .env
 .env.local
 .env.*
 
-# IDE files
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# Logs
-*.log
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
 
 # Coverage reports
 coverage/
 htmlcov/
 .coverage
 
-# Testing
-.nyc_output/
-coverage-final.json
+# Python specific
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Build outputs
+target/
+build/
+dist/
+*.egg-info/
 
 # OS generated files
 .DS_Store
 Thumbs.db
-
-# Temporary files
-*.tmp
-*.temp
 ```

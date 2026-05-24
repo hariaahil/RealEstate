@@ -1,12 +1,18 @@
 import Image from 'next/image';
-import { sampleProperties, sampleAgents, samplePropertyImages, samplePropertyVideos } from '@/lib/sampleData';
+import { sampleAgents } from '@/lib/sampleData';
 import { InquiryForm } from '@/components/inquiry-form';
 import { Button } from '@/components/ui/button';
 import { PropertyGallery } from '@/components/property-gallery';
+import { getPropertyBySlug } from '@/services/propertyService';
+import { getAgents } from '@/services/agentService';
+import { getPropertyImages } from '@/services/propertyService';
+import { getPropertyVideos } from '@/services/propertyService';
+import type { Property, Agent, PropertyImage, PropertyVideo } from '@/types';
 
 export default async function PropertyDetailsPage({ params }: any) {
   const resolvedParams = await params;
-  const property = sampleProperties.find((item) => item.slug === resolvedParams.slug);
+  const property = await getPropertyBySlug(resolvedParams.slug);
+  
   if (!property) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-7xl items-center justify-center px-6 py-20 text-center text-zinc-700">
@@ -18,9 +24,10 @@ export default async function PropertyDetailsPage({ params }: any) {
     );
   }
 
-  const agent = sampleAgents.find((item) => item.id === property.agent_id);
-  const images = samplePropertyImages.filter((image) => image.property_id === property.id);
-  const videos = samplePropertyVideos.filter((video) => video.property_id === property.id);
+  const agents = await getAgents();
+  const agent = agents.find((item) => item.id === property.agent_id);
+  const images = await getPropertyImages(property.id);
+  const videos = await getPropertyVideos(property.id);
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">

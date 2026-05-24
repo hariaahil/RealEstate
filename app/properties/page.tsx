@@ -1,11 +1,16 @@
 import Link from 'next/link';
-import { sampleProperties, sampleAgents } from '@/lib/sampleData';
+import { sampleAgents } from '@/lib/sampleData';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { PropertyCard } from '@/components/property-card';
 import { Button } from '@/components/ui/button';
+import { getProperties } from '@/services/propertyService';
+import { getAgents } from '@/services/agentService';
+import type { Property, Agent } from '@/types';
 
-export default function PropertiesPage() {
-  const topProperties = sampleProperties.filter((property) => property.status === 'approved');
+export default async function PropertiesPage() {
+  const properties = await getProperties();
+  const agents = await getAgents();
+  const topProperties = properties.filter((property) => property.status === 'approved');
 
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-16 pt-8 sm:px-6 lg:grid-cols-[330px_1fr] lg:px-8">
@@ -27,10 +32,16 @@ export default function PropertiesPage() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {topProperties.map((property) => {
-            const agent = sampleAgents.find((item) => item.id === property.agent_id);
-            return agent ? <PropertyCard key={property.id} property={property} agentName={agent.name} /> : null;
-          })}
+          {topProperties.length > 0 ? (
+            topProperties.map((property) => {
+              const agent = agents.find((item) => item.id === property.agent_id);
+              return agent ? <PropertyCard key={property.id} property={property} agentName={agent.name} /> : null;
+            })
+          ) : (
+            <div className="col-span-full rounded-[2.5rem] bg-white p-6 text-center shadow-soft sm:p-8 lg:p-14">
+              <p className="text-zinc-600">No properties available yet.</p>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-center gap-4 rounded-full border border-zinc-200 bg-white px-6 py-4 shadow-soft">

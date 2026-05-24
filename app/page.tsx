@@ -1,12 +1,18 @@
 import Link from 'next/link';
-import { sampleAgents, sampleProperties, featuredLocalities } from '@/lib/sampleData';
+import { featuredLocalities } from '@/lib/sampleData';
 import { FeaturedCarousel } from '@/components/featured-carousel';
 import { SearchBar } from '@/components/search-bar';
 import { StatsSection } from '@/components/stats-section';
 import { WhatsAppButton } from '@/components/whatsapp-button';
 import { Button } from '@/components/ui/button';
+import { getProperties } from '@/services/propertyService';
+import { getAgents } from '@/services/agentService';
+import type { Property, Agent } from '@/types';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const properties = await getProperties();
+  const agents = await getAgents();
+  const featuredProperties = properties.filter((property) => property.featured);
   return (
     <div className="space-y-12 px-4 pb-16 pt-8 sm:px-6 lg:space-y-20 lg:px-8">
       <section className="mx-auto flex max-w-7xl flex-col gap-8 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 lg:p-14">
@@ -47,7 +53,13 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
-        <FeaturedCarousel properties={sampleProperties.filter((property) => property.featured)} />
+        {featuredProperties.length > 0 ? (
+          <FeaturedCarousel properties={featuredProperties} />
+        ) : (
+          <div className="rounded-[2.5rem] bg-white p-6 text-center shadow-soft sm:p-8 lg:p-14">
+            <p className="text-zinc-600">No featured properties available yet.</p>
+          </div>
+        )}
       </section>
 
       <section className="mx-auto max-w-7xl rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 lg:p-14">
@@ -66,18 +78,24 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
-        <div className="grid gap-6 sm:gap-8 lg:grid-cols-3">
-          {sampleAgents.map((agent) => (
-            <div key={agent.id} className="rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-soft sm:p-6">
-              <p className="text-sm font-semibold text-zinc-900">{agent.name}</p>
-              <p className="mt-2 text-sm text-zinc-600">{agent.area_specialization.join(', ')}</p>
-              <p className="mt-4 text-sm leading-6 text-zinc-600">{agent.bio}</p>
-              <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-brand-600 px-5 text-sm font-semibold text-white transition hover:bg-brand-700">
-                Chat on WhatsApp
-              </a>
-            </div>
-          ))}
-        </div>
+        {agents.length > 0 ? (
+          <div className="grid gap-6 sm:gap-8 lg:grid-cols-3">
+            {agents.map((agent) => (
+              <div key={agent.id} className="rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-soft sm:p-6">
+                <p className="text-sm font-semibold text-zinc-900">{agent.name}</p>
+                <p className="mt-2 text-sm text-zinc-600">{agent.area_specialization.join(', ')}</p>
+                <p className="mt-4 text-sm leading-6 text-zinc-600">{agent.bio}</p>
+                <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-brand-600 px-5 text-sm font-semibold text-white transition hover:bg-brand-700">
+                  Chat on WhatsApp
+                </a>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-[2.5rem] bg-white p-6 text-center shadow-soft sm:p-8 lg:p-14">
+            <p className="text-zinc-600">No agents available yet.</p>
+          </div>
+        )}
       </section>
 
       <section className="mx-auto max-w-7xl rounded-[2.5rem] bg-gradient-to-r from-emerald-50 via-white to-zinc-50 p-6 shadow-soft sm:p-8 lg:p-14">
