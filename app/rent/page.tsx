@@ -1,4 +1,5 @@
 import { getPropertiesPage } from '@/services/propertyService';
+import { getAgents } from '@/services/agentService';
 import { PropertyCard } from '@/components/property-card';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { SearchBar } from '@/components/search-bar';
@@ -11,6 +12,12 @@ export const metadata: Metadata = {
 
 export default async function RentalsPage() {
   const { properties } = await getPropertiesPage({ listingCategory: 'rent', pageSize: 12 });
+  const agents = properties.length > 0 ? await getAgents() : [];
+  const agentById = new Map(agents.map((agent) => [agent.id, agent] as const));
+  const propertiesWithAgent = properties.map((property) => ({
+    property,
+    agent: agentById.get(property.agent_id),
+  }));
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -28,8 +35,13 @@ export default async function RentalsPage() {
         <div className="space-y-6">
           {properties.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {properties.map((property) => (
-                <PropertyCard key={property.id} property={property} />
+              {propertiesWithAgent.map(({ property, agent }) => (
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  agentName={agent?.name ?? 'HydPropertyHub Agent'}
+                  agentWhatsapp={agent?.whatsapp}
+                />
               ))}
             </div>
           ) : (
