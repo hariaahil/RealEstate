@@ -14,6 +14,11 @@ export default async function AgentDashboardPage() {
     redirect('/login');
   }
 
+  const userRole = session.data.session.user.app_metadata?.role as string | undefined;
+  if (userRole !== 'agent') {
+    redirect('/dashboard/admin');
+  }
+
   const agentId = session.data.session.user.id;
   const agentProperties = sampleProperties.filter((property) => property.agent_id === agentId);
   const agentLeads = await getInquiries(agentId);
@@ -50,6 +55,25 @@ export default async function AgentDashboardPage() {
           <div className="rounded-[2rem] bg-white p-6 shadow-soft">
             <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Conversion rate</p>
             <p className="mt-4 text-4xl font-semibold text-zinc-950">82%</p>
+          </div>
+        </div>
+
+        <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
+          <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Role and responsibilities</p>
+          <h2 className="mt-3 text-2xl font-semibold text-zinc-950">What you can manage as an agent</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="font-semibold text-zinc-900">Listings</p>
+              <p className="mt-2 text-sm text-zinc-600">Create and edit your properties, pricing, media, and status.</p>
+            </div>
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="font-semibold text-zinc-900">Leads</p>
+              <p className="mt-2 text-sm text-zinc-600">Track new inquiries, update inquiry status, and follow up quickly.</p>
+            </div>
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="font-semibold text-zinc-900">Performance</p>
+              <p className="mt-2 text-sm text-zinc-600">Monitor active listings and improve conversion with timely updates.</p>
+            </div>
           </div>
         </div>
 

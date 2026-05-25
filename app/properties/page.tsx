@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { PropertyCard } from '@/components/property-card';
 import { getPropertiesPage } from '@/services/propertyService';
@@ -14,25 +15,33 @@ const sortOptions = [
   { value: 'sqft_high_low', label: 'Size: Largest' },
 ] as const;
 
-export default async function PropertiesPage({ searchParams }: { searchParams: { page?: string; sort?: string; locality?: string } }) {
+export default async function PropertiesPage({ searchParams }: { searchParams: { page?: string; sort?: string; locality?: string; minPrice?: string; maxPrice?: string; bhk?: string } }) {
   const page = Number(searchParams.page ?? '1');
   const sort = (searchParams.sort as string) ?? 'latest';
   const locality = searchParams.locality;
+  const minPrice = Number(searchParams.minPrice ?? '0') || undefined;
+  const maxPrice = Number(searchParams.maxPrice ?? '0') || undefined;
+  const bhk = Number(searchParams.bhk ?? '0') || undefined;
   const pageSize = 9;
 
-  const { properties, total } = await getPropertiesPage({ page, pageSize, sort: sort as any, locality });
+  const { properties, total } = await getPropertiesPage({ page, pageSize, sort: sort as any, locality, minRent: minPrice, maxRent: maxPrice, bhk });
   const agents = await getAgents();
   const topProperties = properties.filter((property) => property.status === 'approved');
   const lastPage = total > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1;
 
   const currentSearchParams = new URLSearchParams();
   if (locality) currentSearchParams.set('locality', locality);
+  if (searchParams.minPrice) currentSearchParams.set('minPrice', searchParams.minPrice);
+  if (searchParams.maxPrice) currentSearchParams.set('maxPrice', searchParams.maxPrice);
+  if (searchParams.bhk) currentSearchParams.set('bhk', searchParams.bhk);
   if (sort) currentSearchParams.set('sort', sort);
 
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-16 pt-8 sm:px-6 lg:grid-cols-[330px_1fr] lg:px-8">
       <aside className="lg:sticky lg:top-24">
-        <FilterSidebar />
+        <Suspense fallback={<div className="rounded-[2rem] border border-zinc-200 bg-white p-5 text-sm text-zinc-500 shadow-soft sm:p-6">Loading filters…</div>}>
+          <FilterSidebar />
+        </Suspense>
       </aside>
       <section className="space-y-8">
         <div className="flex flex-col gap-4 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 sm:flex-row sm:items-center sm:justify-between">
