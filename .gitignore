@@ -1,50 +1,26 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-dist/
-build/
-*.out
+# Next.js build outputs
+.next/
+out/
+
+# TypeScript build info
+tsconfig.tsbuildinfo
+
+# Environment variables
+.env.local
+.env
+
+# Logs
+*.log
 
 # Dependencies
 node_modules/
-venv/
-.venv/
-.env
-.env.local
-.env.*
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-
-# Editors
+# Editor
 .vscode/
 .idea/
 
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
-
-# Python specific
-*.pyc
-__pycache__/
-*.pyo
-*.pyd
-.Python
-*.so
-
-# Build outputs
-target/
-build/
-dist/
-*.egg-info/
-
-# OS generated files
+# OS
 .DS_Store
 Thumbs.db
 ```
