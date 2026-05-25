@@ -4,6 +4,7 @@ import { PropertyCard } from '@/components/property-card';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { SearchBar } from '@/components/search-bar';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Premium Rentals | HydPropertyHub',
@@ -30,7 +31,9 @@ export default async function RentalsPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-        <FilterSidebar initialCategory="rent" />
+        <Suspense fallback={<div className="h-72 rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-soft sm:p-6" />}>
+          <FilterSidebar initialCategory="rent" />
+        </Suspense>
         
         <div className="space-y-6">
           {properties.length > 0 ? (
