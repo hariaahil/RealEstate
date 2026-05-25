@@ -5,7 +5,11 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-export function FilterSidebar() {
+interface FilterSidebarProps {
+  initialCategory?: 'sale' | 'rent';
+}
+
+export function FilterSidebar({ initialCategory = 'sale' }: FilterSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -16,6 +20,7 @@ export function FilterSidebar() {
   const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') ?? '');
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') ?? '');
   const [bhk, setBhk] = useState(searchParams.get('bhk') ?? '');
+  const [category, setCategory] = useState(searchParams.get('category') ?? initialCategory);
 
   const applyFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
