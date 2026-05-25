@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { sampleAgents } from '@/lib/sampleData';
 import { InquiryForm } from '@/components/inquiry-form';
 import { PropertyCard } from '@/components/property-card';
 import { PropertyGallery } from '@/components/property-gallery';
@@ -45,8 +44,8 @@ export default async function PropertyDetailsPage({ params }: any) {
       <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="space-y-10">
           <div className="space-y-4 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
                 <p className="text-sm uppercase tracking-[0.3em] text-brand-600">{property.locality}</p>
                 <h1 className="mt-2 text-2xl font-semibold text-zinc-950 sm:text-3xl lg:text-4xl">{property.title}</h1>
                 <div className="mt-4 flex flex-wrap gap-3">
@@ -61,7 +60,7 @@ export default async function PropertyDetailsPage({ params }: any) {
                   </a>
                 </div>
               </div>
-              <div className="rounded-3xl bg-zinc-50 px-5 py-3 text-sm font-semibold text-zinc-800">{property.property_type}</div>
+              <div className="w-fit rounded-3xl bg-zinc-50 px-5 py-3 text-sm font-semibold text-zinc-800">{property.property_type}</div>
             </div>
             <div className="grid gap-4 rounded-[2rem] border border-zinc-200 p-5 sm:grid-cols-3">
               <div className="space-y-2">
@@ -111,13 +110,13 @@ export default async function PropertyDetailsPage({ params }: any) {
                 <h3 className="text-lg font-semibold sm:text-xl">Assigned advisor</h3>
                 {agent ? (
                   <div className="mt-6 space-y-3">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-start gap-4">
                       <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-3xl bg-zinc-100">
                         <Image src={agent.profile_image} alt={agent.name} fill className="object-cover" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="font-semibold">{agent.name}</p>
-                        <p className="text-sm text-zinc-600">{agent.area_specialization.join(', ')}</p>
+                        <p className="text-sm text-zinc-600 break-words">{agent.area_specialization.join(', ')}</p>
                       </div>
                     </div>
                     <p className="text-sm leading-6 text-zinc-600">{agent.bio}</p>
@@ -158,7 +157,7 @@ export default async function PropertyDetailsPage({ params }: any) {
                 <h2 className="mt-3 text-2xl font-semibold text-zinc-950">You may also like</h2>
               </div>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-1">
               {await Promise.all(similarProperties.map(async (property) => {
                 const agent = agents.find((item) => item.id === property.agent_id);
                 const images = await getPropertyImages(property.id);
