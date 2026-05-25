@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { PropertyCard } from '@/components/property-card';
 import { getPropertiesPage } from '@/services/propertyService';
@@ -38,7 +39,9 @@ export default async function PropertiesPage({ searchParams }: { searchParams: {
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-16 pt-8 sm:px-6 lg:grid-cols-[330px_1fr] lg:px-8">
       <aside className="lg:sticky lg:top-24">
-        <FilterSidebar />
+        <Suspense fallback={<div className="rounded-[2rem] border border-zinc-200 bg-white p-5 text-sm text-zinc-500 shadow-soft sm:p-6">Loading filters…</div>}>
+          <FilterSidebar />
+        </Suspense>
       </aside>
       <section className="space-y-8">
         <div className="flex flex-col gap-4 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 sm:flex-row sm:items-center sm:justify-between">
