@@ -14,19 +14,25 @@ const sortOptions = [
   { value: 'sqft_high_low', label: 'Size: Largest' },
 ] as const;
 
-export default async function PropertiesPage({ searchParams }: { searchParams: { page?: string; sort?: string; locality?: string } }) {
+export default async function PropertiesPage({ searchParams }: { searchParams: { page?: string; sort?: string; locality?: string; minPrice?: string; maxPrice?: string; bhk?: string } }) {
   const page = Number(searchParams.page ?? '1');
   const sort = (searchParams.sort as string) ?? 'latest';
   const locality = searchParams.locality;
+  const minPrice = Number(searchParams.minPrice ?? '0') || undefined;
+  const maxPrice = Number(searchParams.maxPrice ?? '0') || undefined;
+  const bhk = Number(searchParams.bhk ?? '0') || undefined;
   const pageSize = 9;
 
-  const { properties, total } = await getPropertiesPage({ page, pageSize, sort: sort as any, locality });
+  const { properties, total } = await getPropertiesPage({ page, pageSize, sort: sort as any, locality, minRent: minPrice, maxRent: maxPrice, bhk });
   const agents = await getAgents();
   const topProperties = properties.filter((property) => property.status === 'approved');
   const lastPage = total > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1;
 
   const currentSearchParams = new URLSearchParams();
   if (locality) currentSearchParams.set('locality', locality);
+  if (searchParams.minPrice) currentSearchParams.set('minPrice', searchParams.minPrice);
+  if (searchParams.maxPrice) currentSearchParams.set('maxPrice', searchParams.maxPrice);
+  if (searchParams.bhk) currentSearchParams.set('bhk', searchParams.bhk);
   if (sort) currentSearchParams.set('sort', sort);
 
   return (

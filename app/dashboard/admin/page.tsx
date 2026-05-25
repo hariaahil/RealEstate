@@ -55,6 +55,25 @@ export default async function AdminDashboardPage() {
         </div>
 
         <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
+          <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Role and responsibilities</p>
+          <h2 className="mt-3 text-2xl font-semibold text-zinc-950">What admin can control</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="font-semibold text-zinc-900">Approvals</p>
+              <p className="mt-2 text-sm text-zinc-600">Approve, reject, and moderate listings before public visibility.</p>
+            </div>
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="font-semibold text-zinc-900">Agent oversight</p>
+              <p className="mt-2 text-sm text-zinc-600">Monitor agent activity, listing quality, and response times.</p>
+            </div>
+            <div className="rounded-3xl border border-zinc-200 p-5">
+              <p className="font-semibold text-zinc-900">Lead operations</p>
+              <p className="mt-2 text-sm text-zinc-600">Review funnel health and ensure leads are handled consistently.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-[2.5rem] bg-white p-8 shadow-soft">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Lead dashboard</p>
