@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { featuredLocalities } from '@/lib/sampleData';
 import { FeaturedCarousel } from '@/components/featured-carousel';
 import { SearchBar } from '@/components/search-bar';
 import { StatsSection } from '@/components/stats-section';
 import { WhatsAppButton } from '@/components/whatsapp-button';
 import { Button } from '@/components/ui/button';
+import { InPagePushAd } from '@/components/ads/InPagePushAd';
 import { getProperties } from '@/services/propertyService';
 import { getAgents } from '@/services/agentService';
 import type { Property, Agent } from '@/types';
@@ -13,6 +13,10 @@ export default async function HomePage() {
   const properties = await getProperties();
   const agents = await getAgents();
   const featuredProperties = properties.filter((property) => property.featured);
+  const featuredLocalities = Array.from(new Set(properties.map((property) => property.locality).filter(Boolean)));
+  const verifiedListings = properties.filter((property) => property.verified).length;
+  const trustedAgents = agents.length;
+  const primaryWhatsappNumber = agents[0]?.whatsapp;
   return (
     <div className="space-y-12 px-4 pb-16 pt-8 sm:px-6 lg:space-y-20 lg:px-8">
       <section className="mx-auto flex max-w-7xl flex-col gap-8 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 lg:p-14">
@@ -22,7 +26,7 @@ export default async function HomePage() {
               Verified Hyderabad Listings
             </p>
             <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-zinc-950 sm:text-4xl lg:text-5xl xl:text-6xl">
-              HydPropertyHub — curated, premium homes across Hyderabad.
+              HydPropertiesHub — curated, premium homes across Hyderabad.
             </h1>
             <p className="max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">
               Discover trusted properties from verified agents only. Search luxury apartments, villas and investor-ready spaces in prime Hyderabad localities.
@@ -55,6 +59,9 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* In-page push ad after hero */}
+      <InPagePushAd placement="home-after-hero" />
+
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
         {featuredProperties.length > 0 ? (
           <FeaturedCarousel properties={featuredProperties} />
@@ -64,6 +71,9 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {/* In-page push ad between featured sections */}
+      <InPagePushAd placement="home-between-featured-sections" />
 
       <section className="mx-auto max-w-7xl rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 lg:p-14">
         <div className="grid gap-6 sm:gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
@@ -79,6 +89,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
 
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
         {agents.length > 0 ? (
@@ -110,19 +121,20 @@ export default async function HomePage() {
           </div>
           <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
             <div className="rounded-[2rem] bg-white p-5 shadow-soft sm:p-6">
-              <p className="text-2xl font-semibold text-zinc-950 sm:text-3xl lg:text-4xl">98%</p>
+              <p className="text-2xl font-semibold text-zinc-950 sm:text-3xl lg:text-4xl">{verifiedListings}</p>
               <p className="mt-2 text-sm text-zinc-600">Verified properties</p>
             </div>
             <div className="rounded-[2rem] bg-white p-5 shadow-soft sm:p-6">
-              <p className="text-2xl font-semibold text-zinc-950 sm:text-3xl lg:text-4xl">5</p>
+              <p className="text-2xl font-semibold text-zinc-950 sm:text-3xl lg:text-4xl">{trustedAgents}</p>
               <p className="mt-2 text-sm text-zinc-600">Dedicated advisors</p>
             </div>
           </div>
         </div>
       </section>
 
+
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
-        <StatsSection />
+        <StatsSection trustedAgents={trustedAgents} verifiedListings={verifiedListings} />
       </section>
 
       <section className="mx-auto max-w-7xl rounded-[2.5rem] bg-white p-6 text-center shadow-soft sm:p-8 lg:p-14">
@@ -138,7 +150,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <WhatsAppButton phone="+919000000000" message="Hello HydPropertyHub, I want property assistance in Hyderabad." />
+      {primaryWhatsappNumber ? (
+        <WhatsAppButton phone={primaryWhatsappNumber} message="Hello HydPropertiesHub, I want property assistance in Hyderabad." />
+      ) : null}
     </div>
   );
 }

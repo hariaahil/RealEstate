@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Premium Rentals | HydPropertyHub',
+  title: 'Premium Rentals | HydPropertiesHub',
   description: 'Browse verified rental properties in Hyderabad. Luxury apartments, PGs, and more.',
 };
 
@@ -42,7 +42,7 @@ export default async function RentalsPage() {
                 <PropertyCard
                   key={property.id}
                   property={property}
-                  agentName={agent?.name ?? 'HydPropertyHub Agent'}
+                  agentName={agent?.name ?? 'HydPropertiesHub Agent'}
                   agentWhatsapp={agent?.whatsapp}
                 />
               ))}

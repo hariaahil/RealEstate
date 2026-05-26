@@ -1,5 +1,4 @@
 import { supabaseClient } from '@/lib/supabaseClient';
-import { sampleInquiries } from '@/lib/sampleData';
 import type { Inquiry, InquiryStatus } from '@/types';
 
 export async function saveInquiry(inquiry: Omit<Inquiry, 'id' | 'created_at'>): Promise<Inquiry | null> {
@@ -22,9 +21,7 @@ export async function saveInquiry(inquiry: Omit<Inquiry, 'id' | 'created_at'>): 
 
 export async function getInquiries(agentId?: string, status?: InquiryStatus): Promise<Inquiry[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    return sampleInquiries
-      .filter((inquiry) => (agentId ? inquiry.assigned_agent_id === agentId : true))
-      .filter((inquiry) => (status ? inquiry.inquiry_status === status : true));
+    return [];
   }
 
   let query = supabaseClient!.from('inquiries').select('*').order('created_at', { ascending: false });
@@ -40,7 +37,7 @@ export async function getInquiries(agentId?: string, status?: InquiryStatus): Pr
   const { data, error } = await query;
   if (error || !data) {
     console.error('Error getting inquiries:', error);
-    return sampleInquiries;
+    return [];
   }
 
   return data as Inquiry[];
@@ -48,10 +45,7 @@ export async function getInquiries(agentId?: string, status?: InquiryStatus): Pr
 
 export async function updateInquiryStatus(inquiryId: string, status: InquiryStatus): Promise<Inquiry | null> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const inquiry = sampleInquiries.find((item) => item.id === inquiryId);
-    if (!inquiry) return null;
-
-    return { ...inquiry, inquiry_status: status };
+    return null;
   }
 
   const { data, error } = await supabaseClient!
@@ -71,10 +65,7 @@ export async function updateInquiryStatus(inquiryId: string, status: InquiryStat
 
 export async function assignInquiryAgent(inquiryId: string, agentId: string): Promise<Inquiry | null> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const inquiry = sampleInquiries.find((item) => item.id === inquiryId);
-    if (!inquiry) return null;
-
-    return { ...inquiry, assigned_agent_id: agentId };
+    return null;
   }
 
   const { data, error } = await supabaseClient!

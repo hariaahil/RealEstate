@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseClient } from '@/lib/supabaseClient';
-import { sampleInquiries } from '@/lib/sampleData';
 import { sendLeadNotification } from '@/services/notificationService';
 import type { Inquiry } from '@/types';
 
@@ -49,11 +48,7 @@ export async function GET(request: NextRequest) {
   const status = request.nextUrl.searchParams.get('status');
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const inquiries = sampleInquiries
-      .filter((inquiry) => (agentId ? inquiry.assigned_agent_id === agentId : true))
-      .filter((inquiry) => (status ? inquiry.inquiry_status === status : true));
-
-    return NextResponse.json({ inquiries });
+    return NextResponse.json({ inquiries: [] });
   }
 
   let query = supabaseClient!.from('inquiries').select('*').order('created_at', { ascending: false });
@@ -87,13 +82,7 @@ export async function PATCH(request: NextRequest) {
   }
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const inquiry = sampleInquiries.find((item) => item.id === body.id);
-    if (!inquiry) {
-      return NextResponse.json({ error: 'Inquiry not found' }, { status: 404 });
-    }
-    const updated = { ...inquiry, ...payload };
-    await sendLeadNotification(updated);
-    return NextResponse.json({ success: true, inquiry: updated });
+    return NextResponse.json({ error: 'Supabase not configured' }, { status: 503 });
   }
 
   const { data, error } = await supabaseClient!
