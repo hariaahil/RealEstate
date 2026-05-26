@@ -79,7 +79,7 @@ export function AuthLoginForm() {
     <div className="mx-auto max-w-lg rounded-[2rem] border border-zinc-200 bg-white p-10 shadow-soft">
       <div className="space-y-3">
         <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Welcome back</p>
-        <h1 className="text-3xl font-semibold text-zinc-950">Sign in to HydPropertyHub</h1>
+        <h1 className="text-3xl font-semibold text-zinc-950">Sign in to HydPropertiesHub</h1>
         <p className="text-sm text-zinc-500">Enter your email and password to access your agent or admin dashboard.</p>
       </div>
 
