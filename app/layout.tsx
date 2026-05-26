@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 export const metadata: Metadata = {
   title: 'HydPropertyHub | Verified Hyderabad Properties',
   description: 'HydPropertyHub is a premium property platform for verified Hyderabad homes and trusted agent-led services.',
+  other: {
+    monetag: '0f440d811001fba0776c5ace0b3ea35f',
+  },
   openGraph: {
     title: 'HydPropertyHub',
     description: 'Verified Hyderabad properties by trusted local agents.',
