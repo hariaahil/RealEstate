@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabaseClient';
-import { sampleProperties } from '@/lib/sampleData';
 import { getInquiries } from '@/services/inquiryService';
+import { getProperties } from '@/services/propertyService';
 import { Button } from '@/components/ui/button';
 import { InquiryStatusControl } from '@/components/inquiry/inquiry-status-control';
 
@@ -20,7 +20,8 @@ export default async function AgentDashboardPage() {
   }
 
   const agentId = session.data.session.user.id;
-  const agentProperties = sampleProperties.filter((property) => property.agent_id === agentId);
+  const allProperties = await getProperties();
+  const agentProperties = allProperties.filter((property) => property.agent_id === agentId);
   const agentLeads = await getInquiries(agentId);
 
   return (

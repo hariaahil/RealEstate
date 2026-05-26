@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabaseClient';
-import { sampleAgents, sampleProperties } from '@/lib/sampleData';
+import { getAgents } from '@/services/agentService';
 import { getInquiries } from '@/services/inquiryService';
+import { getProperties } from '@/services/propertyService';
 import { Button } from '@/components/ui/button';
 
 export default async function AdminDashboardPage() {
@@ -18,6 +19,8 @@ export default async function AdminDashboardPage() {
   }
 
   const inquiries = await getInquiries();
+  const agents = await getAgents();
+  const properties = await getProperties();
   const counts = inquiries.reduce(
     (acc, inquiry) => ({
       ...acc,
@@ -42,11 +45,11 @@ export default async function AdminDashboardPage() {
         <div className="grid gap-6 md:grid-cols-3">
           <div className="rounded-[2rem] bg-white p-6 shadow-soft">
             <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Agents</p>
-            <p className="mt-4 text-4xl font-semibold text-zinc-950">{sampleAgents.length}</p>
+            <p className="mt-4 text-4xl font-semibold text-zinc-950">{agents.length}</p>
           </div>
           <div className="rounded-[2rem] bg-white p-6 shadow-soft">
             <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Active listings</p>
-            <p className="mt-4 text-4xl font-semibold text-zinc-950">{sampleProperties.length}</p>
+            <p className="mt-4 text-4xl font-semibold text-zinc-950">{properties.length}</p>
           </div>
           <div className="rounded-[2rem] bg-white p-6 shadow-soft">
             <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Leads</p>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 
 const areas = ['Gachibowli', 'Kondapur', 'Madhapur', 'Miyapur', 'Kukatpally', 'Financial District', 'Hitech City'];
@@ -8,7 +9,9 @@ export function Footer() {
     <footer className="border-t border-zinc-200 bg-zinc-950 text-zinc-300">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[1.4fr_1fr] lg:px-8">
         <div>
-          <div className="mb-4 text-2xl font-semibold text-white">HydPropertiesHub</div>
+          <div className="mb-4">
+            <Image src="/logo.svg" alt="HydPropertiesHub logo" width={230} height={58} className="h-auto w-[230px] max-w-full" />
+          </div>
           <p className="max-w-lg leading-7 text-zinc-400">
             A premium Hyderabad property platform offering verified listings and dedicated agent-led assistance for discerning buyers.
           </p>

@@ -1,5 +1,4 @@
 import { supabaseClient } from '@/lib/supabaseClient';
-import { sampleContactUnlocks, sampleRentalInquiries } from '@/lib/sampleData';
 import type { ContactUnlock, RentalInquiry, InquiryStatus } from '@/types';
 
 export async function saveRentalInquiry(inquiry: Omit<RentalInquiry, 'id' | 'created_at'>): Promise<RentalInquiry | null> {
@@ -27,9 +26,7 @@ export async function saveRentalInquiry(inquiry: Omit<RentalInquiry, 'id' | 'cre
 
 export async function getRentalInquiries(agentId?: string, status?: InquiryStatus): Promise<RentalInquiry[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    return sampleRentalInquiries
-      .filter((inquiry) => (agentId ? inquiry.assigned_agent_id === agentId : true))
-      .filter((inquiry) => (status ? inquiry.inquiry_status === status : true));
+    return [];
   }
 
   let query = supabaseClient!.from('rental_inquiries').select('*').order('created_at', { ascending: false });
@@ -76,7 +73,7 @@ export async function saveContactUnlock(unlock: Omit<ContactUnlock, 'id' | 'unlo
 
 export async function getContactUnlocks(userId?: string): Promise<ContactUnlock[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    return userId ? sampleContactUnlocks.filter((unlock) => unlock.user_id === userId) : sampleContactUnlocks;
+    return [];
   }
 
   let query = supabaseClient!.from('contact_unlocks').select('*').order('unlocked_at', { ascending: false });

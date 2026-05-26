@@ -11,6 +11,10 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 export const metadata: Metadata = {
   title: 'HydPropertiesHub | Verified Hyderabad Properties',
   description: 'HydPropertiesHub is a premium property platform for verified Hyderabad homes and trusted agent-led services.',
+  icons: {
+    icon: '/icon.svg',
+    apple: '/apple-icon.svg',
+  },
   openGraph: {
     title: 'HydPropertiesHub',
     description: 'Verified Hyderabad properties by trusted local agents.',
@@ -18,7 +22,7 @@ export const metadata: Metadata = {
     siteName: 'HydPropertiesHub',
     images: [
       {
-        url: 'https://res.cloudinary.com/demo/image/upload/v1690000000/og-image.jpg',
+        url: 'https://www.hydpropertieshub.com/logo.svg',
         width: 1200,
         height: 630,
         alt: 'HydPropertiesHub',

@@ -5,6 +5,14 @@ import { motion } from 'framer-motion';
 import type { PropertyImage } from '@/types';
 
 export function PropertyGallery({ images }: { images: PropertyImage[] }) {
+  if (!images.length) {
+    return (
+      <div className="rounded-[2rem] border border-zinc-200 bg-zinc-50 p-8 text-center text-sm text-zinc-500">
+        Property images are not available right now.
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {images.slice(0, 4).map((image) => (

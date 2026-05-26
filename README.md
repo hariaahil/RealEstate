@@ -26,6 +26,9 @@ cp .env.example .env.local
 ```
 
 3. Set your Supabase and Cloudinary credentials in `.env.local`.
+   - For your Cloudinary account, set `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dwuulroak`.
+   - Create an **unsigned** upload preset in Cloudinary and set `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET`.
+   - The current upload flow does **not** require Cloudinary API key/secret in the browser.
 
 4. Run the development server:
 

@@ -1,5 +1,4 @@
 import { supabaseClient } from '@/lib/supabaseClient';
-import { sampleProperties, samplePropertyImages, samplePropertyVideos } from '@/lib/sampleData';
 import type { Property, PropertyImage, PropertyVideo, TenantPreference } from '@/types';
 
 function isSupabaseConfigured() {
@@ -72,7 +71,7 @@ export function normalizeLocality(value: string) {
   return value.trim().replace(/-/g, ' ').toLowerCase();
 }
 
-export function sortSampleProperties(properties: Property[], sort?: PropertyQuerySort) {
+export function sortProperties(properties: Property[], sort?: PropertyQuerySort) {
   return [...properties].sort((a, b) => {
     switch (sort) {
       case 'price_low_high':
@@ -97,67 +96,7 @@ export async function getPropertiesPage(options: PropertyQueryOptions = {}): Pro
   const start = (page - 1) * pageSize;
   const end = start + pageSize - 1;
 
-  if (!isSupabaseConfigured()) {
-    let filtered = sampleProperties;
-
-    if (options.listingCategory) {
-      filtered = filtered.filter((property) => property.listing_category === options.listingCategory);
-    }
-
-    if (options.locality) {
-      const normalizedLocality = normalizeLocality(options.locality);
-      filtered = filtered.filter((property) => normalizeLocality(property.locality) === normalizedLocality);
-    }
-
-    if (options.bhk) {
-      filtered = filtered.filter((property) => property.bhk === options.bhk);
-    }
-
-    if (options.furnishing) {
-      filtered = filtered.filter((property) => property.furnishing === options.furnishing);
-    }
-
-    if (options.minRent) {
-      filtered = filtered.filter((property) => (property.monthly_rent || 0) >= options.minRent!);
-    }
-
-    if (options.maxRent) {
-      filtered = filtered.filter((property) => (property.monthly_rent || 0) <= options.maxRent!);
-    }
-
-    if (options.depositMin) {
-      filtered = filtered.filter((property) => (property.deposit_amount || 0) >= options.depositMin!);
-    }
-
-    if (options.depositMax) {
-      filtered = filtered.filter((property) => (property.deposit_amount || 0) <= options.depositMax!);
-    }
-
-    if (options.bathrooms) {
-      filtered = filtered.filter((property) => property.bathrooms === options.bathrooms);
-    }
-
-    if (options.balcony) {
-      filtered = filtered.filter((property) => property.balcony === options.balcony);
-    }
-
-    if (options.petsAllowed !== undefined) {
-      filtered = filtered.filter((property) => property.pets_allowed === options.petsAllowed);
-    }
-
-    if (options.availableFrom) {
-      filtered = filtered.filter((property) => property.available_from && property.available_from >= options.availableFrom!);
-    }
-
-    if (options.tenantPreference) {
-      filtered = filtered.filter((property) => property.tenant_preference?.includes(options.tenantPreference!));
-    }
-
-    const sorted = sortSampleProperties(filtered, options.sort);
-    const sliced = sorted.slice(start, end + 1);
-
-    return { properties: sliced.map(normalizeProperty), total: filtered.length };
-  }
+  if (!isSupabaseConfigured()) return { properties: [], total: 0 };
 
   const query = supabaseClient!
     .from('properties')
@@ -256,10 +195,7 @@ export async function getPropertiesPage(options: PropertyQueryOptions = {}): Pro
 
 export async function getSimilarProperties(property: Property): Promise<Property[]> {
   if (!isSupabaseConfigured()) {
-    return sampleProperties
-      .filter((item) => item.id !== property.id && item.status === 'approved' && item.listing_category === property.listing_category && normalizeLocality(item.locality) === normalizeLocality(property.locality))
-      .slice(0, 3)
-      .map(normalizeProperty);
+    return [];
   }
 
   const normalizedLocality = property.locality.replace(/-/g, ' ');
@@ -309,8 +245,7 @@ export async function getPropertyById(propertyId: string): Promise<Property | nu
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
   if (!isSupabaseConfigured()) {
-    const property = sampleProperties.find((item) => item.slug === slug);
-    return property ? normalizeProperty(property) : null;
+    return null;
   }
 
   const { data: property, error } = await supabaseClient!
@@ -332,11 +267,7 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
 
 export async function getPropertiesByLocality(locality: string): Promise<Property[]> {
   if (!isSupabaseConfigured()) {
-    const normalizedLocality = normalizeLocality(locality);
-    return sampleProperties
-      .filter((item) => normalizeLocality(item.locality) === normalizedLocality)
-      .sort((a, b) => (a.price || 0) - (b.price || 0))
-      .map(normalizeProperty);
+    return [];
   }
 
   const normalizedLocality = locality.replace(/-/g, ' ');
@@ -382,7 +313,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
 
 export async function getPropertyImages(propertyId: string): Promise<PropertyImage[]> {
   if (!isSupabaseConfigured()) {
-    return samplePropertyImages.filter((image) => image.property_id === propertyId);
+    return [];
   }
 
   const { data, error } = await supabaseClient!
@@ -401,7 +332,7 @@ export async function getPropertyImages(propertyId: string): Promise<PropertyIma
 
 export async function getPropertyVideos(propertyId: string): Promise<PropertyVideo[]> {
   if (!isSupabaseConfigured()) {
-    return samplePropertyVideos.filter((video) => video.property_id === propertyId);
+    return [];
   }
 
   const { data, error } = await supabaseClient!

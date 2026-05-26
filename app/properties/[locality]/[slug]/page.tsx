@@ -42,8 +42,7 @@ export default async function PropertyDetailsPage({ params }: any) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
-      <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="space-y-10">
+      <div className="space-y-10">
           <div className="space-y-4 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
@@ -79,8 +78,8 @@ export default async function PropertyDetailsPage({ params }: any) {
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1.8fr_1fr]">
-            <div className="space-y-6">
+          <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
+            <div className="space-y-6 min-w-0">
               <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
                 <PropertyGallery images={images} />
               </div>
@@ -109,7 +108,7 @@ export default async function PropertyDetailsPage({ params }: any) {
                 </ul>
               </div>
             </div>
-            <div className="space-y-6">
+            <div className="space-y-6 min-w-0">
               <div className="rounded-[2.5rem] bg-white p-6 sm:p-8 text-zinc-950 shadow-soft">
                 <h3 className="text-lg font-semibold sm:text-xl">Assigned advisor</h3>
                 {agent ? (
@@ -156,7 +155,7 @@ export default async function PropertyDetailsPage({ params }: any) {
         </div>
 
         {similarProperties.length > 0 && (
-          <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
+          <section className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
             <div className="mb-6 flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Similar properties</p>
@@ -178,9 +177,8 @@ export default async function PropertyDetailsPage({ params }: any) {
                 ) : null;
               }))}
             </div>
-          </div>
+          </section>
         )}
-      </div>
     </div>
   );
 }
