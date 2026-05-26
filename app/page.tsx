@@ -26,7 +26,7 @@ export default async function HomePage() {
               Verified Hyderabad Listings
             </p>
             <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-zinc-950 sm:text-4xl lg:text-5xl xl:text-6xl">
-              HydPropertyHub — curated, premium homes across Hyderabad.
+              HydPropertiesHub — curated, premium homes across Hyderabad.
             </h1>
             <p className="max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">
               Discover trusted properties from verified agents only. Search luxury apartments, villas and investor-ready spaces in prime Hyderabad localities.
@@ -151,7 +151,7 @@ export default async function HomePage() {
       </section>
 
       {primaryWhatsappNumber ? (
-        <WhatsAppButton phone={primaryWhatsappNumber} message="Hello HydPropertyHub, I want property assistance in Hyderabad." />
+        <WhatsAppButton phone={primaryWhatsappNumber} message="Hello HydPropertiesHub, I want property assistance in Hyderabad." />
       ) : null}
     </div>
   );

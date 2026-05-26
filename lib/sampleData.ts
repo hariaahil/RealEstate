@@ -14,7 +14,7 @@ export const sampleAgents: Agent[] = [
   {
     id: 'agent-asha',
     name: 'Ashwin Rao',
-    email: 'ashwin@hydpropertyhub.com',
+    email: 'ashwin@hydpropertieshub.com',
     phone: '+91 91234 56789',
     whatsapp: '+919123456789',
     area_specialization: ['Gachibowli', 'Hitech City', 'Financial District'],
@@ -25,7 +25,7 @@ export const sampleAgents: Agent[] = [
   {
     id: 'agent-sana',
     name: 'Sana Mehta',
-    email: 'sana@hydpropertyhub.com',
+    email: 'sana@hydpropertieshub.com',
     phone: '+91 98765 43210',
     whatsapp: '+919876543210',
     area_specialization: ['Kondapur', 'Madhapur', 'Miyapur'],
@@ -36,7 +36,7 @@ export const sampleAgents: Agent[] = [
   {
     id: 'agent-ravi',
     name: 'Ravi Kulkarni',
-    email: 'ravi@hydpropertyhub.com',
+    email: 'ravi@hydpropertieshub.com',
     phone: '+91 99887 66554',
     whatsapp: '+919988766554',
     area_specialization: ['Kukatpally', 'Miyapur', 'Madhapur'],
@@ -47,7 +47,7 @@ export const sampleAgents: Agent[] = [
   {
     id: 'agent-leela',
     name: 'Leela Sharma',
-    email: 'leela@hydpropertyhub.com',
+    email: 'leela@hydpropertieshub.com',
     phone: '+91 90123 45678',
     whatsapp: '+919012345678',
     area_specialization: ['Gachibowli', 'Kondapur', 'Hitech City'],
@@ -58,7 +58,7 @@ export const sampleAgents: Agent[] = [
   {
     id: 'agent-veer',
     name: 'Veer Kapoor',
-    email: 'veer@hydpropertyhub.com',
+    email: 'veer@hydpropertieshub.com',
     phone: '+91 93456 78901',
     whatsapp: '+919345678901',
     area_specialization: ['Financial District', 'Kondapur', 'Hitech City'],

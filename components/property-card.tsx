@@ -68,7 +68,7 @@ export function PropertyCard({ property, agentName, agentWhatsapp, images }: Pro
           </Link>
           {whatsappNumber ? (
             <a
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi HydPropertyHub, I'm interested in ${property.title}`)}`}
+              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi HydPropertiesHub, I'm interested in ${property.title}`)}`}
               target="_blank"
               rel="noreferrer"
               className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-200 px-4 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"

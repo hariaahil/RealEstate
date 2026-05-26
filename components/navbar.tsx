@@ -28,7 +28,7 @@ export function Navbar() {
         <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3 text-zinc-900">
           <div className="flex-shrink-0 rounded-xl bg-zinc-900 px-2 py-1.5 text-xs font-semibold text-white shadow-soft sm:rounded-2xl sm:px-3 sm:py-2 sm:text-sm">HYD</div>
           <div className="min-w-0">
-            <p className="truncate text-base font-semibold sm:text-lg">HydPropertyHub</p>
+            <p className="truncate text-base font-semibold sm:text-lg">HydPropertiesHub</p>
             <p className="hidden text-xs text-zinc-600 sm:block">Verified Hyderabad Properties</p>
           </div>
         </Link>

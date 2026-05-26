@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'HydPropertiesHub',
     description: 'Verified Hyderabad properties by trusted local agents.',
-    url: 'https://hydpropertieshub.com',
+    url: 'https://www.hydpropertieshub.com',
     siteName: 'HydPropertiesHub',
     images: [
       {

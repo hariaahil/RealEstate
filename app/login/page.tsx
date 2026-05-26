@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { AuthLoginForm } from '@/components/auth/login-form';
 
 export const metadata: Metadata = {
-  title: 'Login | HydPropertyHub',
+  title: 'Login | HydPropertiesHub',
   description: 'Sign in to access agent and admin dashboards.',
 };
 

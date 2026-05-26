@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="border-t border-zinc-200 bg-zinc-950 text-zinc-300">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[1.4fr_1fr] lg:px-8">
         <div>
-          <div className="mb-4 text-2xl font-semibold text-white">HydPropertyHub</div>
+          <div className="mb-4 text-2xl font-semibold text-white">HydPropertiesHub</div>
           <p className="max-w-lg leading-7 text-zinc-400">
             A premium Hyderabad property platform offering verified listings and dedicated agent-led assistance for discerning buyers.
           </p>
@@ -32,14 +32,14 @@ export function Footer() {
 
           <div>
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">Contact</h3>
-            <p className="text-sm text-zinc-300">hello@hydpropertyhub.com</p>
+            <p className="text-sm text-zinc-300">hello@hydpropertieshub.com</p>
             <p className="mt-2 text-sm text-zinc-300">+91 90000 00000</p>
             <p className="mt-2 text-sm text-zinc-300">Hyderabad, Telangana</p>
           </div>
         </div>
       </div>
       <div className="border-t border-zinc-800 px-6 py-6 text-center text-sm text-zinc-500 lg:px-8">
-        © {new Date().getFullYear()} HydPropertyHub. All rights reserved.
+        © {new Date().getFullYear()} HydPropertiesHub. All rights reserved.
       </div>
     </footer>
   );

@@ -22,7 +22,7 @@ export function PaymentButton({ amount, propertyId, onSuccess, onFailure }: Paym
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: amount * 100, // Amount in paise
         currency: 'INR',
-        name: 'HydPropertyHub',
+        name: 'HydPropertiesHub',
         description: 'Contact Unlock Payment',
         order_id: await createOrder(amount, propertyId),
         handler: async (response: any) => {
