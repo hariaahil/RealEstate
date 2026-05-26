@@ -5,6 +5,7 @@ import { PropertyCard } from '@/components/property-card';
 import { getPropertiesPage } from '@/services/propertyService';
 import { getAgents } from '@/services/agentService';
 import { getPropertyImages } from '@/services/propertyService';
+import { InPagePushAd } from '@/components/ads/InPagePushAd';
 import type { Property, Agent, PropertyImage } from '@/types';
 
 const sortOptions = [
@@ -75,19 +76,32 @@ export default async function PropertiesPage({ searchParams }: { searchParams: {
 
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {topProperties.length > 0 ? (
-            await Promise.all(topProperties.map(async (property) => {
-              const agent = agents.find((item) => item.id === property.agent_id);
-              const images = await getPropertyImages(property.id);
-              return agent ? (
-                <PropertyCard
-                  key={property.id}
-                  property={property}
-                  agentName={agent.name}
-                  agentWhatsapp={agent.whatsapp}
-                  images={images}
-                />
-              ) : null;
-            }))
+            (() => {
+              const propertyCards = topProperties.map(async (property, index) => {
+                const agent = agents.find((item) => item.id === property.agent_id);
+                const images = await getPropertyImages(property.id);
+
+                if (!agent) return null;
+
+                return (
+                  <div key={property.id} className="contents">
+                    <PropertyCard
+                      property={property}
+                      agentName={agent.name}
+                      agentWhatsapp={agent.whatsapp}
+                      images={images}
+                    />
+                    {(index + 1) % 6 === 0 ? (
+                      <div key={`ad-${property.id}`} className="sm:col-span-2 xl:col-span-3">
+                        <InPagePushAd placement={`properties-after-card-${index + 1}`} className="px-0" />
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              });
+
+              return Promise.all(propertyCards);
+            })()
           ) : (
             <div className="col-span-full rounded-[2.5rem] bg-white p-6 text-center shadow-soft sm:p-8 lg:p-14">
               <p className="text-zinc-600">No properties available yet.</p>

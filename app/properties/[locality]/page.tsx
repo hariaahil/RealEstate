@@ -1,6 +1,7 @@
 import { PropertyCard } from '@/components/property-card';
 import { getAgents } from '@/services/agentService';
 import { getPropertyImages, getPropertiesPage } from '@/services/propertyService';
+import { InPagePushAd } from '@/components/ads/InPagePushAd';
 import type { Property } from '@/types';
 
 export default async function LocalityPage({ params }: { params: { locality: string } }) {
@@ -24,17 +25,23 @@ export default async function LocalityPage({ params }: { params: { locality: str
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {await Promise.all(properties.map(async (property) => {
+            {await Promise.all(properties.map(async (property, index) => {
               const agent = agents.find((item) => item.id === property.agent_id);
               const images = await getPropertyImages(property.id);
               return agent ? (
-                <PropertyCard
-                  key={property.id}
-                  property={property}
-                  agentName={agent.name}
-                  agentWhatsapp={agent.whatsapp}
-                  images={images}
-                />
+                <div key={property.id} className="contents">
+                  <PropertyCard
+                    property={property}
+                    agentName={agent.name}
+                    agentWhatsapp={agent.whatsapp}
+                    images={images}
+                  />
+                  {(index + 1) % 6 === 0 ? (
+                    <div className="sm:col-span-2 xl:col-span-3">
+                      <InPagePushAd placement={`locality-after-card-${index + 1}`} className="px-0" />
+                    </div>
+                  ) : null}
+                </div>
               ) : null;
             }))}
           </div>
