@@ -4,6 +4,7 @@ import { PropertyCard } from '@/components/property-card';
 import { PropertyGallery } from '@/components/property-gallery';
 import { FavoriteButton } from '@/components/favorite-button';
 import { RecentlyViewed } from '@/components/recently-viewed';
+import { InPagePushAd } from '@/components/ads/InPagePushAd';
 import { getPropertyBySlug, getPropertyImages, getPropertyVideos, getSimilarProperties } from '@/services/propertyService';
 import { getAgents } from '@/services/agentService';
 import type { Property, Agent, PropertyImage, PropertyVideo } from '@/types';
@@ -84,6 +85,9 @@ export default async function PropertyDetailsPage({ params }: any) {
                 <PropertyGallery images={images} />
               </div>
 
+              {/* In-page push ad below gallery */}
+              <InPagePushAd placement="property-detail-below-gallery" className="px-0" />
+
               <div className="rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8">
                 <h2 className="text-xl font-semibold text-zinc-950 sm:text-2xl">Property details</h2>
                 <p className="mt-4 text-zinc-600">{property.description}</p>
@@ -135,6 +139,8 @@ export default async function PropertyDetailsPage({ params }: any) {
               </div>
 
               <InquiryForm propertyId={property.id} agentId={property.agent_id} />
+              {/* In-page push ad below inquiry */}
+              <InPagePushAd placement="property-detail-below-inquiry" className="px-0" />
               <RecentlyViewed current={currentProperty} />
             </div>
           </div>

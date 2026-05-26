@@ -4,6 +4,7 @@ import { SearchBar } from '@/components/search-bar';
 import { StatsSection } from '@/components/stats-section';
 import { WhatsAppButton } from '@/components/whatsapp-button';
 import { Button } from '@/components/ui/button';
+import { InPagePushAd } from '@/components/ads/InPagePushAd';
 import { getProperties } from '@/services/propertyService';
 import { getAgents } from '@/services/agentService';
 import type { Property, Agent } from '@/types';
@@ -58,6 +59,9 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* In-page push ad after hero */}
+      <InPagePushAd placement="home-after-hero" />
+
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
         {featuredProperties.length > 0 ? (
           <FeaturedCarousel properties={featuredProperties} />
@@ -67,6 +71,9 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {/* In-page push ad between featured sections */}
+      <InPagePushAd placement="home-between-featured-sections" />
 
       <section className="mx-auto max-w-7xl rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 lg:p-14">
         <div className="grid gap-6 sm:gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
@@ -82,6 +89,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
 
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
         {agents.length > 0 ? (
@@ -123,6 +131,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
 
       <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
         <StatsSection trustedAgents={trustedAgents} verifiedListings={verifiedListings} />
