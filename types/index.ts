@@ -1,5 +1,18 @@
 export type AgentRole = 'agent' | 'admin';
 
+export type UserRole = 'user' | 'agent' | 'admin';
+
+export type PlatformSettings = {
+  id: string;
+  enable_google_login: boolean;
+  enable_otp_login: boolean;
+  enable_email_login: boolean;
+  enable_customer_signup: boolean;
+  enable_agent_signup: boolean;
+  maintenance_mode: boolean;
+  created_at: string;
+};
+
 export type Agent = {
   id: string;
   name: string;
@@ -10,8 +23,9 @@ export type Agent = {
   profile_image: string;
   bio: string;
   role: AgentRole;
+  status?: 'pending' | 'approved' | 'rejected';
+  created_at: string;
 };
-
 export type PropertyStatus = 'pending' | 'approved' | 'rejected';
 export type PropertyType = 'Apartment' | 'Villa' | 'Plot' | 'Office' | 'Retail' | 'PG' | 'Commercial';
 export type ListingCategory = 'sale' | 'rent';
@@ -31,6 +45,7 @@ export type Property = {
   locality: string;
   city: string;
   address_approx: string;
+  furnishing: Furnishing;
   amenities: string[];
   latitude: number;
   longitude: number;
@@ -38,7 +53,6 @@ export type Property = {
   verified: boolean;
   status: PropertyStatus;
   agent_id: string;
-  furnishing: Furnishing;
   parking?: number;
   deposit_amount?: number;
   monthly_rent?: number;

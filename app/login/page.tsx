@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { AuthLoginForm } from '@/components/auth/login-form';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Login | HydPropertiesHub',
@@ -17,6 +18,12 @@ export default function LoginPage() {
             <p className="mt-3 max-w-2xl text-sm text-zinc-500">
               Agents and admins can log in here to manage listings, inquiries, approvals, and leads.
             </p>
+            <div className="mt-6 text-sm text-zinc-600">
+              New to HydPropertiesHub?{' '}
+              <Link href="/signup" className="font-semibold text-zinc-900 underline hover:text-zinc-700">
+                Create an account
+              </Link>
+            </div>
           </div>
         </div>
 

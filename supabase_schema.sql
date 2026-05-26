@@ -12,6 +12,7 @@ create table if not exists public.agents (
   profile_image text,
   bio text,
   role text default 'agent' check (role in ('agent', 'admin')),
+  status text default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamp with time zone default timezone('utc'::text, now())
 );
 
@@ -115,6 +116,27 @@ create table if not exists public.rental_inquiries (
   inquiry_status text default 'new' check (inquiry_status in ('new', 'contacted', 'qualified', 'closed')),
   created_at timestamp with time zone default timezone('utc'::text, now())
 );
+
+-- 9. Create Platform Settings Table
+create table if not exists public.platform_settings (
+  id uuid default uuid_generate_v4() primary key,
+  enable_google_login boolean default true,
+  enable_otp_login boolean default true,
+  enable_email_login boolean default true,
+  enable_customer_signup boolean default true,
+  enable_agent_signup boolean default false,
+  maintenance_mode boolean default false,
+  created_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+alter table public.platform_settings enable row level security;
+create policy "Allow public read access to platform settings" on public.platform_settings for select using (true);
+create policy "Allow public update to platform settings" on public.platform_settings for update using (true) with check (true);
+
+-- Ensure one default settings row exists
+insert into public.platform_settings (enable_google_login, enable_otp_login, enable_email_login, enable_customer_signup, enable_agent_signup, maintenance_mode)
+select true, true, true, true, false, false
+where not exists (select 1 from public.platform_settings);
 
 -- Enable Row Level Security (RLS)
 alter table public.agents enable row level security;

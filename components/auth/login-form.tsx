@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import type { PlatformSettings } from '@/types';
 
 export function AuthLoginForm() {
   const [supabase, setSupabase] = useState<any | null>(null);
@@ -12,11 +13,29 @@ export function AuthLoginForm() {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState<string | null>(null);
+  const [settings, setSettings] = useState<PlatformSettings | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [returnTo, setReturnTo] = useState<string | null>(null);
 
   useEffect(() => {
     setSupabase(createBrowserSupabaseClient());
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('/api/settings');
+        const data = await response.json();
+        if (response.ok) {
+          setSettings(data);
+        }
+      } catch (error) {
+        console.error('Failed to load auth settings', error);
+      }
+    };
+    fetchSettings();
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setReturnTo(params.get('returnTo'));
+    }
   }, []);
 
   const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
@@ -28,6 +47,12 @@ export function AuthLoginForm() {
 
     setIsLoading(true);
     setMessage(null);
+
+    if (settings && !settings.enable_email_login) {
+      setIsLoading(false);
+      setMessage('Email login is disabled by admin.');
+      return;
+    }
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -42,6 +67,7 @@ export function AuthLoginForm() {
     }
 
     const role = data.user?.app_metadata?.role;
+    const redirectTo = returnTo || undefined;
 
     if (role === 'admin') {
       router.push('/dashboard/admin');
@@ -50,6 +76,11 @@ export function AuthLoginForm() {
 
     if (role === 'agent') {
       router.push('/dashboard/agent');
+      return;
+    }
+
+    if (role === 'user') {
+      router.push(redirectTo ?? '/dashboard/user');
       return;
     }
 
@@ -71,6 +102,10 @@ export function AuthLoginForm() {
 
   const handleGoogleLogin = async () => {
     if (!supabase) return;
+    if (settings && !settings.enable_google_login) {
+      setMessage('Google login is currently disabled.');
+      return;
+    }
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
     if (error) setMessage(error.message);
   };
@@ -105,6 +140,13 @@ export function AuthLoginForm() {
           </Button>
         </div>
 
+        {settings && !settings.enable_otp_login ? (
+          <p className="text-sm text-amber-700">OTP login is currently disabled by the admin.</p>
+        ) : null}
+        {settings && !settings.enable_google_login ? (
+          <p className="text-sm text-amber-700">Google login is currently disabled by the admin.</p>
+        ) : null}
+
         <div className="flex items-center gap-3">
           <div className="h-px flex-1 bg-zinc-200" />
           <span className="text-xs uppercase tracking-[0.2em] text-zinc-400">Fallback</span>
@@ -136,6 +178,10 @@ export function AuthLoginForm() {
             />
           </label>
         </div>
+
+        {settings && !settings.enable_email_login ? (
+          <p className="text-sm text-amber-700">Email/password login is currently disabled by the admin.</p>
+        ) : null}
 
         {message ? <p className="text-sm text-red-600">{message}</p> : null}
 
