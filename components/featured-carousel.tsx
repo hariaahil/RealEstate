@@ -9,6 +9,14 @@ import { formatCurrency } from '@/lib/utils';
 
 export function FeaturedCarousel({ properties }: { properties: Property[] }) {
   const [brokenImageIds, setBrokenImageIds] = useState<Record<string, true>>({});
+  
+  const getImageUrl = (property: Property): string | null => {
+    if (property.property_images && property.property_images.length > 0) {
+      const primaryImage = property.property_images.find(img => img.is_primary);
+      return primaryImage?.image_url || property.property_images[0].image_url;
+    }
+    return null;
+  };
 
   return (
     <div className="space-y-4">
@@ -20,12 +28,14 @@ export function FeaturedCarousel({ properties }: { properties: Property[] }) {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {properties.map((property) => (
+        {properties.map((property) => {
+          const imageUrl = getImageUrl(property);
+          return (
           <article key={property.id} className="overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-2xl">
             <div className="relative h-60 bg-zinc-100">
-              {property.image_url && !brokenImageIds[property.id] ? (
+              {imageUrl && !brokenImageIds[property.id] ? (
                 <img
-                  src={property.image_url}
+                  src={imageUrl}
                   alt={property.title}
                   className="h-full w-full object-cover"
                   onError={() => setBrokenImageIds((prev) => ({ ...prev, [property.id]: true }))}
@@ -45,7 +55,8 @@ export function FeaturedCarousel({ properties }: { properties: Property[] }) {
               </Link>
             </div>
           </article>
-        ))}
+        );
+        })}
       </div>
     </div>
   );
