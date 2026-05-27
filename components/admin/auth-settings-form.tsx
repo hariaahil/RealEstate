@@ -28,7 +28,7 @@ export function AuthSettingsForm({ initialSettings }: Props) {
     <h1 className='text-3xl font-semibold'>Admin Auth Settings</h1>
     <div className='mt-6 space-y-4 rounded-2xl bg-white p-6 shadow-soft'>
       {fields.map((field) => <label key={field} className='flex items-center justify-between border-b py-3'>
-        <span className='capitalize'>{field.replaceAll('_', ' ')}</span>
+        <span className='capitalize'>{field.split('_').join(' ')}</span>
         <input type='checkbox' checked={Boolean(settings[field])} onChange={(e) => setSettings((prev) => ({ ...prev, [field]: e.target.checked }))} />
       </label>)}
       <Button onClick={save} disabled={saving}>{saving ? 'Saving...' : 'Save settings'}</Button>

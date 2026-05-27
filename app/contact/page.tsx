@@ -1,0 +1,1 @@
+export default function ContactPage(){return <div className='mx-auto max-w-4xl px-6 py-12'><h1 className='text-4xl font-semibold'>Contact Us</h1><p className='mt-4 text-zinc-600'>Email support@hydpropertieshub.com for support, listing concerns, and partnerships.</p></div>}
