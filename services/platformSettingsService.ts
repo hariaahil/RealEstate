@@ -18,7 +18,7 @@ export async function getPlatformSettings(): Promise<PlatformSettings> {
   const { data } = await supabaseClient!
     .from('platform_settings')
     .select('*')
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();
 
