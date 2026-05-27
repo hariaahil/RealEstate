@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { getPlatformSettings, updatePlatformSettings } from '@/services/platformSettingsService';
+import { getUserRole } from '@/lib/auth';
 
 async function ensureAdmin() {
   const supabase = createServerSupabase();
   const session = await supabase?.auth.getSession();
-  const role = session?.data.session?.user.app_metadata?.role;
+  const role = getUserRole(session?.data.session?.user);
   return role === 'admin';
 }
 
