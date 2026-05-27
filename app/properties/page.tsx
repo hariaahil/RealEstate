@@ -45,13 +45,13 @@ export default async function PropertiesPage({ searchParams }: { searchParams: {
         </Suspense>
       </aside>
       <section className="space-y-8">
-        <div className="flex flex-col gap-4 rounded-[2.5rem] bg-white p-6 shadow-soft sm:p-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 rounded-[2rem] bg-white p-4 shadow-soft sm:rounded-[2.5rem] sm:p-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Explore listings</p>
             <h1 className="mt-3 text-3xl font-semibold text-zinc-950">Verified Hyderabad properties</h1>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-700">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="flex w-full flex-wrap items-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-3 py-3 text-sm text-zinc-700 sm:w-auto sm:rounded-full sm:px-4">
               <span className="font-semibold">Sort:</span>
               {sortOptions.map((option) => {
                 const params = new URLSearchParams(currentSearchParams);
@@ -68,7 +68,7 @@ export default async function PropertiesPage({ searchParams }: { searchParams: {
                 );
               })}
             </div>
-            <Link href="/dashboard/agent" className="inline-flex h-11 items-center rounded-full border border-zinc-200 px-4 text-xs sm:h-12 sm:px-5 sm:text-sm font-semibold text-zinc-900 transition hover:bg-zinc-50">
+            <Link href="/dashboard/agent" className="inline-flex h-11 w-full items-center justify-center rounded-full border border-zinc-200 px-4 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-50 sm:h-12 sm:w-auto sm:px-5 sm:text-sm">
               Agent dashboard
             </Link>
           </div>
@@ -109,7 +109,7 @@ export default async function PropertiesPage({ searchParams }: { searchParams: {
           )}
         </div>
 
-        <div className="flex items-center justify-center gap-4 rounded-full border border-zinc-200 bg-white px-6 py-4 shadow-soft">
+        <div className="flex flex-col items-center justify-center gap-3 rounded-3xl border border-zinc-200 bg-white px-4 py-4 shadow-soft sm:flex-row sm:gap-4 sm:rounded-full sm:px-6">
           <Link
             href={`/properties?${new URLSearchParams({
               ...Object.fromEntries(currentSearchParams.entries()),
