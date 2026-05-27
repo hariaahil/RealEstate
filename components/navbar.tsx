@@ -4,19 +4,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/app/providers';
 
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/properties', label: 'Properties' },
   { href: '/rent', label: 'Rentals' },
-  { href: '/dashboard/agent', label: 'Agent Hub' },
-  { href: '/dashboard/admin', label: 'Admin Hub' },
 ];
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const role = user?.app_metadata?.role as string | undefined;
+
+  const dashboardNavItems = [
+    ...(role === 'agent' || role === 'admin' ? [{ href: '/dashboard/agent', label: 'Agent Hub' }] : []),
+    ...(role === 'admin' ? [{ href: '/dashboard/admin', label: 'Admin Hub' }] : []),
+  ];
+
+  const visibleNavItems = [...navItems, ...dashboardNavItems];
 
   return (
     <motion.header
@@ -37,7 +44,7 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">
-          {navItems.map((item) => (
+          {visibleNavItems.map((item) => (
             <Link key={item.href} href={item.href} className="text-sm font-medium text-zinc-700 transition hover:text-zinc-900">
               {item.label}
             </Link>
@@ -77,7 +84,7 @@ export function Navbar() {
           className="border-t border-zinc-200 bg-white px-4 py-4 lg:hidden"
         >
           <nav className="flex flex-col gap-2">
-            {navItems.map((item) => (
+            {visibleNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
