@@ -8,10 +8,12 @@ create table if not exists public.agents (
   email text not null,
   phone text not null,
   whatsapp text,
+  user_id text,
   area_specialization text[], -- Array of strings for areas
   profile_image text,
   bio text,
   role text default 'agent' check (role in ('agent', 'admin')),
+  status text default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamp with time zone default timezone('utc'::text, now())
 );
 

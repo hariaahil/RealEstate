@@ -1,7 +1,21 @@
 export type AgentRole = 'agent' | 'admin';
 
+export type UserRole = 'user' | 'agent' | 'admin';
+
+export type PlatformSettings = {
+  id: string;
+  enable_google_login: boolean;
+  enable_otp_login: boolean;
+  enable_email_login: boolean;
+  enable_customer_signup: boolean;
+  enable_agent_signup: boolean;
+  maintenance_mode: boolean;
+  created_at: string;
+};
+
 export type Agent = {
   id: string;
+  user_id?: string;
   name: string;
   email: string;
   phone: string;
@@ -10,6 +24,8 @@ export type Agent = {
   profile_image: string;
   bio: string;
   role: AgentRole;
+  status?: 'pending' | 'approved' | 'rejected';
+  created_at: string;
 };
 
 export type PropertyStatus = 'pending' | 'approved' | 'rejected';
