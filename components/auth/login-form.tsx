@@ -6,7 +6,6 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { PlatformSettings } from '@/types';
-import { getUserRole } from '@/lib/auth';
 
 export function AuthLoginForm({ settings }: { settings: PlatformSettings }) {
   const [supabase, setSupabase] = useState<any | null>(null);
@@ -43,7 +42,10 @@ export function AuthLoginForm({ settings }: { settings: PlatformSettings }) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     setIsLoading(false);
     if (error) return setMessage(error.message);
-    routeByRole(getUserRole(data.user));
+    
+    // Get role from user metadata
+    const role = data.user?.user_metadata?.role || data.user?.app_metadata?.role || 'customer';
+    routeByRole(role);
   };
 
   const handleOtpLogin = async () => {

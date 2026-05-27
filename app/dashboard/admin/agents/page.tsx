@@ -3,7 +3,7 @@ import { createServerSupabase } from '@/lib/supabaseClient';
 import { getAgents } from '@/services/agentService';
 import { AgentApprovalControl } from '@/components/admin/agent-approval-control';
 import Link from 'next/link';
-import { getUserRole } from '@/lib/auth';
+import { getUserRoleFromSession } from '@/lib/auth';
 
 export default async function AdminAgentsPage() {
   const supabase = createServerSupabase();
@@ -13,7 +13,7 @@ export default async function AdminAgentsPage() {
     redirect('/login');
   }
 
-  const userRole = getUserRole(session.data.session.user);
+  const userRole = await getUserRoleFromSession(session.data.session);
   if (userRole !== 'admin') {
     redirect('/login');
   }

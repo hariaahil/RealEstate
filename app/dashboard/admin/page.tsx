@@ -4,7 +4,7 @@ import { getAgents } from '@/services/agentService';
 import { getInquiries } from '@/services/inquiryService';
 import { getProperties } from '@/services/propertyService';
 import { Button } from '@/components/ui/button';
-import { getUserRole } from '@/lib/auth';
+import { getUserRoleFromSession } from '@/lib/auth';
 
 export default async function AdminDashboardPage() {
   const supabase = createServerSupabase();
@@ -14,7 +14,7 @@ export default async function AdminDashboardPage() {
     redirect('/login');
   }
 
-  const userRole = getUserRole(session.data.session.user);
+  const userRole = await getUserRoleFromSession(session.data.session);
   if (userRole !== 'admin') {
     redirect('/login');
   }

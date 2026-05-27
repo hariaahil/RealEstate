@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { getProperties } from '@/services/propertyService';
-import { getUserRole } from '@/lib/auth';
+import { getUserRoleFromSession } from '@/lib/auth';
 
 export default async function AgentPropertiesPage() {
   const supabase = createServerSupabase();
   const session = await supabase?.auth.getSession();
   if (!session?.data.session) redirect('/login');
-  const role = getUserRole(session.data.session.user);
+  const role = await getUserRoleFromSession(session.data.session);
   if (role !== 'agent' && role !== 'admin') redirect('/login');
   const properties = await getProperties();
   const mine = role === 'admin' ? properties : properties.filter((p) => p.agent_id === session.data.session?.user.id);

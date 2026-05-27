@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import { getUserRole } from '@/lib/auth';
+import { getUserRoleFromSession } from '@/lib/auth';
 
 const allowedRoles = new Set(['user', 'agent', 'admin']);
 
@@ -10,7 +10,7 @@ export async function PATCH(request: NextRequest) {
     const supabase = createServerSupabase();
     const session = await supabase?.auth.getSession();
 
-    if (!session?.data.session || getUserRole(session.data.session.user) !== 'admin') {
+    if (!session?.data.session || await getUserRoleFromSession(session.data.session) !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

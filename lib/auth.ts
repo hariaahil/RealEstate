@@ -282,6 +282,26 @@ export async function getUserRole(): Promise<string | null> {
 }
 
 /**
+ * Get user role from session (for server-side usage)
+ */
+export async function getUserRoleFromSession(session: any): Promise<string | null> {
+  if (!session?.user?.id) return null;
+  
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+    
+    if (error) return null;
+    return data?.role || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Check if user is admin
  */
 export async function isAdmin(): Promise<boolean> {

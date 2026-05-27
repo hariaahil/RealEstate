@@ -5,7 +5,7 @@ import { getInquiries } from '@/services/inquiryService';
 import { getProperties } from '@/services/propertyService';
 import { Button } from '@/components/ui/button';
 import { InquiryStatusControl } from '@/components/inquiry/inquiry-status-control';
-import { getUserRole } from '@/lib/auth';
+import { getUserRoleFromSession } from '@/lib/auth';
 
 export default async function AgentDashboardPage() {
   const supabase = createServerSupabase();
@@ -15,7 +15,7 @@ export default async function AgentDashboardPage() {
     redirect('/login');
   }
 
-  const userRole = getUserRole(session.data.session.user);
+  const userRole = await getUserRoleFromSession(session.data.session);
   if (userRole !== 'agent') {
     redirect('/dashboard/admin');
   }

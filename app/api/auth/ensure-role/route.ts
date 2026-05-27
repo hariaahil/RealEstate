@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import { getUserRole } from '@/lib/auth';
+import { getUserRoleFromSession } from '@/lib/auth';
 
 export async function POST() {
   try {
@@ -14,7 +14,7 @@ export async function POST() {
     }
 
     const hasStoredRole = Boolean(user.app_metadata?.role || user.user_metadata?.role);
-    const role = getUserRole(user);
+    const role = await getUserRoleFromSession(session.data.session);
 
     if (hasStoredRole) {
       return NextResponse.json({ role, updated: false });

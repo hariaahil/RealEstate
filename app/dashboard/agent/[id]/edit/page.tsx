@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { getPropertyById } from '@/services/propertyService';
 import { PropertyForm } from '@/components/property/property-form';
-import { getUserRole } from '@/lib/auth';
+import { getUserRoleFromSession } from '@/lib/auth';
 
 export default async function AgentEditPropertyPage({ params }: { params: { id: string } }) {
   const supabase = createServerSupabase();
@@ -12,7 +12,7 @@ export default async function AgentEditPropertyPage({ params }: { params: { id: 
     redirect('/login');
   }
 
-  const role = getUserRole(session.data.session.user);
+  const role = await getUserRoleFromSession(session.data.session);
   if (role !== 'agent' && role !== 'admin') {
     redirect('/login');
   }

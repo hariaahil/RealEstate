@@ -1,13 +1,12 @@
 'use client';
 
-import { getUserRole } from '@/lib/auth';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/app/providers';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -18,7 +17,18 @@ const navItems = [
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
-  const role = getUserRole(user);
+  const [role, setRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (user) {
+      const supabase = createBrowserSupabaseClient();
+      supabase.from('profiles').select('role').eq('id', user.id).single().then(({ data }) => {
+        setRole(data?.role || user.user_metadata?.role || user.app_metadata?.role || 'customer');
+      });
+    } else {
+      setRole(undefined);
+    }
+  }, [user]);
 
   const dashboardNavItems = [
     ...(role === 'agent' || role === 'admin' ? [{ href: '/dashboard/agent', label: 'Agent Hub' }] : []),
