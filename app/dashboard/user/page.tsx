@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { getContactUnlocks } from '@/services/rentalService';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import { PropertyCard } from '@/components/property-card';
 import { RecentlyViewed } from '@/components/recently-viewed';
 
@@ -25,7 +25,7 @@ export default async function UserDashboardPage() {
               <p className="text-sm uppercase tracking-[0.3em] text-brand-600">User dashboard</p>
               <h1 className="mt-3 text-4xl font-semibold text-zinc-950">Manage your favorites and unlocked contacts.</h1>
             </div>
-            <Button variant="outline" onClick={() => window.location.href = '/properties'}>Browse Properties</Button>
+            <Link href="/properties" className="inline-flex items-center rounded-full border border-zinc-200 px-5 py-2 text-sm font-medium">Browse Properties</Link>
           </div>
         </div>
 

@@ -1,8 +1,8 @@
-import { supabaseClient } from '@/lib/supabaseClient';
+import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 import type { ContactUnlock, RentalInquiry, InquiryStatus } from '@/types';
 
 export async function saveRentalInquiry(inquiry: Omit<RentalInquiry, 'id' | 'created_at'>): Promise<RentalInquiry | null> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return {
       ...inquiry,
       id: `rinq-${Math.random().toString(36).slice(2, 8)}`,
@@ -25,7 +25,7 @@ export async function saveRentalInquiry(inquiry: Omit<RentalInquiry, 'id' | 'cre
 }
 
 export async function getRentalInquiries(agentId?: string, status?: InquiryStatus): Promise<RentalInquiry[]> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return [];
   }
 
@@ -49,7 +49,7 @@ export async function getRentalInquiries(agentId?: string, status?: InquiryStatu
 }
 
 export async function saveContactUnlock(unlock: Omit<ContactUnlock, 'id' | 'unlocked_at'>): Promise<ContactUnlock | null> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return {
       ...unlock,
       id: `unlock-${Math.random().toString(36).slice(2, 8)}`,
@@ -72,7 +72,7 @@ export async function saveContactUnlock(unlock: Omit<ContactUnlock, 'id' | 'unlo
 }
 
 export async function getContactUnlocks(userId?: string): Promise<ContactUnlock[]> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return [];
   }
 
