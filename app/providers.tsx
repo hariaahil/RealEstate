@@ -28,13 +28,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      if (session?.user) {
+        void fetch('/api/auth/ensure-role', { method: 'POST' });
+      }
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      if (event === 'SIGNED_IN' && session?.user) {
+        void fetch('/api/auth/ensure-role', { method: 'POST' });
+      }
     });
 
     return () => subscription.unsubscribe();

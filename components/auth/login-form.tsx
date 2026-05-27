@@ -6,6 +6,7 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { PlatformSettings } from '@/types';
+import { getUserRole } from '@/lib/auth';
 
 export function AuthLoginForm({ settings }: { settings: PlatformSettings }) {
   const [supabase, setSupabase] = useState<any | null>(null);
@@ -26,6 +27,12 @@ export function AuthLoginForm({ settings }: { settings: PlatformSettings }) {
     return router.push('/dashboard/user');
   };
 
+  const enabledLoginMethods = [
+    settings.enable_otp_login,
+    settings.enable_email_login,
+    settings.enable_google_login,
+  ].some(Boolean);
+
   const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!settings.enable_email_login) return setMessage('Email login is currently disabled by admin.');
@@ -36,7 +43,7 @@ export function AuthLoginForm({ settings }: { settings: PlatformSettings }) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     setIsLoading(false);
     if (error) return setMessage(error.message);
-    routeByRole(data.user?.app_metadata?.role);
+    routeByRole(getUserRole(data.user));
   };
 
   const handleOtpLogin = async () => {
@@ -65,20 +72,35 @@ export function AuthLoginForm({ settings }: { settings: PlatformSettings }) {
       </div>
 
       <form onSubmit={handleSignIn} className="mt-8 space-y-6">
-        <div className="space-y-3 rounded-2xl border border-brand-100 bg-brand-50 p-4">
-          <p className="text-sm font-semibold text-brand-700">Primary login: Mobile OTP</p>
-          <Input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+919876543210" className="mt-2" />
-          <Button type="button" onClick={handleOtpLogin} disabled={isLoading || !settings.enable_otp_login} className="w-full">Send OTP</Button>
-          <Button type="button" variant="outline" onClick={handleGoogleLogin} disabled={!settings.enable_google_login} className="w-full">Continue with Google</Button>
-        </div>
+        {!enabledLoginMethods ? (
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+            Login is temporarily disabled by admin settings.
+          </div>
+        ) : null}
 
-        <div className="space-y-4">
-          <Input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" required className="mt-2" />
-          <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" required className="mt-2" />
-        </div>
+        {settings.enable_otp_login ? (
+          <div className="space-y-3 rounded-2xl border border-brand-100 bg-brand-50 p-4">
+            <p className="text-sm font-semibold text-brand-700">Primary login: Mobile OTP</p>
+            <Input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+919876543210" className="mt-2" />
+            <Button type="button" onClick={handleOtpLogin} disabled={isLoading} className="w-full">Send OTP</Button>
+          </div>
+        ) : null}
+
+        {settings.enable_google_login ? (
+          <Button type="button" variant="outline" onClick={handleGoogleLogin} className="w-full">Continue with Google</Button>
+        ) : null}
+
+        {settings.enable_email_login ? (
+          <>
+            <div className="space-y-4">
+              <Input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" required className="mt-2" />
+              <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" required className="mt-2" />
+            </div>
+            <Button type="submit" disabled={isLoading} className="w-full">{isLoading ? 'Signing in…' : 'Sign in'}</Button>
+          </>
+        ) : null}
 
         {message ? <p className="text-sm text-red-600">{message}</p> : null}
-        <Button type="submit" disabled={isLoading || !settings.enable_email_login} className="w-full">{isLoading ? 'Signing in…' : 'Sign in'}</Button>
       </form>
     </div>
   );
