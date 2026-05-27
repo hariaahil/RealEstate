@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
     const fakeInquiry: Inquiry = {
       id: `inq-${Math.random().toString(36).slice(2, 8)}`,
       property_id: body.property_id,
+      user_id: null,
       buyer_name: body.buyer_name,
       buyer_phone: body.buyer_phone,
       buyer_email: body.buyer_email,
@@ -27,6 +28,7 @@ export async function POST(request: NextRequest) {
       inquiry_status: 'new',
       assigned_agent_id: body.assigned_agent_id,
       created_at: payload.created_at,
+      updated_at: payload.created_at,
     };
 
     await sendLeadNotification(fakeInquiry);
