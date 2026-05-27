@@ -1,14 +1,9 @@
-import { supabaseClient } from '@/lib/supabaseClient';
+import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 import type { Property, PropertyImage, PropertyVideo, TenantPreference } from '@/types';
 
 function isSupabaseConfigured() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    console.warn('Supabase URL not configured. Returning empty result.');
-    return false;
-  }
-
-  if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    console.warn('Supabase anon key not configured. Returning empty result.');
+  if (!isSupabaseClientConfigured) {
+    console.warn('Supabase client not configured. Returning empty result.');
     return false;
   }
 
