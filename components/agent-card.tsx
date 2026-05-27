@@ -6,17 +6,17 @@ export function AgentCard({ agent }: { agent: Agent }) {
   return (
     <div className="overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-soft">
       <div className="relative h-72 w-full overflow-hidden bg-zinc-100">
-        <Image src={agent.profile_image} alt={agent.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+        <Image src={agent.profile_image || '/logo.svg'} alt={agent.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
       </div>
       <div className="space-y-4 p-6">
         <div>
           <p className="text-sm font-semibold text-zinc-900">{agent.name}</p>
-          <p className="text-sm text-zinc-500">{agent.area_specialization.join(', ')}</p>
+          <p className="text-sm text-zinc-500">{agent.area_specialization?.join(', ') || 'Area details coming soon'}</p>
         </div>
-        <p className="text-sm leading-6 text-zinc-600">{agent.bio}</p>
+        <p className="text-sm leading-6 text-zinc-600">{agent.bio || 'Bio coming soon.'}</p>
         <div className="flex flex-wrap items-center gap-2">
           <a
-            href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`}
+            href={agent.whatsapp ? `https://wa.me/${agent.whatsapp.replace(/\D/g, '')}` : '#'}
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-200 px-4 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"

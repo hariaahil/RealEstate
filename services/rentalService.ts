@@ -1,12 +1,13 @@
 import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 import type { ContactUnlock, RentalInquiry, InquiryStatus } from '@/types';
 
-export async function saveRentalInquiry(inquiry: Omit<RentalInquiry, 'id' | 'created_at'>): Promise<RentalInquiry | null> {
+export async function saveRentalInquiry(inquiry: Omit<RentalInquiry, 'id' | 'created_at' | 'updated_at' | 'user_id'>): Promise<RentalInquiry | null> {
   if (!isSupabaseClientConfigured) {
     return {
       ...inquiry,
       id: `rinq-${Math.random().toString(36).slice(2, 8)}`,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
   }
 

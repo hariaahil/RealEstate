@@ -33,7 +33,7 @@ export default async function LocalityPage({ params }: { params: { locality: str
                   <PropertyCard
                     property={property}
                     agentName={agent.name}
-                    agentWhatsapp={agent.whatsapp}
+                    agentWhatsapp={agent.whatsapp || undefined}
                     images={images}
                   />
                   {(index + 1) % 6 === 0 ? (
