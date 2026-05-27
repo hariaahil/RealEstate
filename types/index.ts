@@ -181,6 +181,17 @@ export interface Notification {
   profiles?: Profile;
 }
 
+export interface PlatformSettings {
+  id: string;
+  enable_google_login: boolean;
+  enable_otp_login: boolean;
+  enable_email_login: boolean;
+  enable_customer_signup: boolean;
+  enable_agent_signup: boolean;
+  maintenance_mode: boolean;
+  created_at: string;
+}
+
 // ==========================================
 // API RESPONSE TYPES
 // ==========================================

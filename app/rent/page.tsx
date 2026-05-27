@@ -17,7 +17,7 @@ export default async function RentalsPage() {
   const agentById = new Map(agents.map((agent) => [agent.id, agent] as const));
   const propertiesWithAgent = properties.map((property) => ({
     property,
-    agent: agentById.get(property.agent_id),
+    agent: property.agent_id ? agentById.get(property.agent_id) : undefined,
   }));
 
   return (
@@ -43,7 +43,7 @@ export default async function RentalsPage() {
                   key={property.id}
                   property={property}
                   agentName={agent?.name ?? 'HydPropertiesHub Agent'}
-                  agentWhatsapp={agent?.whatsapp}
+                  agentWhatsapp={agent?.whatsapp || undefined}
                 />
               ))}
             </div>

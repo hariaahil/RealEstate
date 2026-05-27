@@ -97,9 +97,9 @@ export default async function HomePage() {
             {agents.map((agent) => (
               <div key={agent.id} className="rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-soft sm:p-6">
                 <p className="text-sm font-semibold text-zinc-900">{agent.name}</p>
-                <p className="mt-2 text-sm text-zinc-600">{agent.area_specialization.join(', ')}</p>
-                <p className="mt-4 text-sm leading-6 text-zinc-600">{agent.bio}</p>
-                <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-brand-600 px-5 text-sm font-semibold text-white transition hover:bg-brand-700">
+                <p className="mt-2 text-sm text-zinc-600">{agent.area_specialization?.join(', ') || 'Area details coming soon'}</p>
+                <p className="mt-4 text-sm leading-6 text-zinc-600">{agent.bio || 'Bio coming soon.'}</p>
+                <a href={agent.whatsapp ? `https://wa.me/${agent.whatsapp.replace(/\D/g, '')}` : '#'} target="_blank" rel="noreferrer" className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-brand-600 px-5 text-sm font-semibold text-white transition hover:bg-brand-700">
                   Chat on WhatsApp
                 </a>
               </div>

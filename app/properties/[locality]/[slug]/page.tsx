@@ -91,7 +91,7 @@ export default async function PropertyDetailsPage({ params }: any) {
                 <h2 className="text-xl font-semibold text-zinc-950 sm:text-2xl">Property details</h2>
                 <p className="mt-4 text-zinc-600">{property.description}</p>
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                  {property.amenities.map((amenity) => (
+                  {(property.amenities || []).map((amenity) => (
                     <div key={amenity} className="rounded-3xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-700">
                       {amenity}
                     </div>
@@ -115,19 +115,19 @@ export default async function PropertyDetailsPage({ params }: any) {
                   <div className="mt-6 space-y-3">
                     <div className="flex items-start gap-4">
                       <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-3xl bg-zinc-100">
-                        <Image src={agent.profile_image} alt={agent.name} fill className="object-cover" />
+                        <Image src={agent.profile_image || '/logo.svg'} alt={agent.name} fill className="object-cover" />
                       </div>
                       <div className="min-w-0">
                         <p className="font-semibold">{agent.name}</p>
-                        <p className="text-sm text-zinc-600 break-words">{agent.area_specialization.join(', ')}</p>
+                        <p className="text-sm text-zinc-600 break-words">{agent.area_specialization?.join(', ') || 'Area details coming soon'}</p>
                       </div>
                     </div>
-                    <p className="text-sm leading-6 text-zinc-600">{agent.bio}</p>
+                    <p className="text-sm leading-6 text-zinc-600">{agent.bio || 'Bio coming soon.'}</p>
                             <div className="grid gap-3">
-                        <a href={`https://wa.me/${agent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 text-xs sm:h-12 sm:text-sm font-semibold text-white transition hover:bg-emerald-700">
+                        <a href={agent.whatsapp ? `https://wa.me/${agent.whatsapp.replace(/\D/g, '')}` : '#'} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 text-xs sm:h-12 sm:text-sm font-semibold text-white transition hover:bg-emerald-700">
                           WhatsApp agent
                         </a>
-                        <a href={`tel:${agent.phone}`} className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-xs sm:h-12 sm:text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100">
+                        <a href={agent.phone ? `tel:${agent.phone}` : '#'} className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-xs sm:h-12 sm:text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100">
                           Call agent
                         </a>
                       </div>
@@ -137,7 +137,7 @@ export default async function PropertyDetailsPage({ params }: any) {
                 )}
               </div>
 
-              <InquiryForm propertyId={property.id} agentId={property.agent_id} />
+              <InquiryForm propertyId={property.id} agentId={property.agent_id || ''} />
               {/* In-page push ad below inquiry */}
               <InPagePushAd placement="property-detail-below-inquiry" className="px-0" />
               <RecentlyViewed current={currentProperty} />
@@ -171,7 +171,7 @@ export default async function PropertyDetailsPage({ params }: any) {
                     key={property.id}
                     property={property}
                     agentName={agent.name}
-                    agentWhatsapp={agent.whatsapp}
+                    agentWhatsapp={agent.whatsapp || undefined}
                     images={images}
                   />
                 ) : null;

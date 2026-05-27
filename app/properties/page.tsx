@@ -88,7 +88,7 @@ export default async function PropertiesPage({ searchParams }: { searchParams: {
                     <PropertyCard
                       property={property}
                       agentName={agent.name}
-                      agentWhatsapp={agent.whatsapp}
+                      agentWhatsapp={agent.whatsapp || undefined}
                       images={images}
                     />
                     {(index + 1) % 6 === 0 ? (

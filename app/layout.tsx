@@ -1,12 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { AuthProvider } from '@/app/providers';
 import { PushNotificationAd } from '@/components/ads/PushNotificationAd';
 import '@/app/globals.css';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'HydPropertiesHub | Verified Hyderabad Properties',
@@ -42,8 +39,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`}>
-      <body className="min-h-screen bg-zinc-50 text-zinc-950 antialiased">
+    <html lang="en" className="scroll-smooth">
+      <body className="min-h-screen bg-zinc-50 text-zinc-950 antialiased font-sans">
         <AuthProvider>
           <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.12),_transparent_45%)]">
             <PushNotificationAd />
