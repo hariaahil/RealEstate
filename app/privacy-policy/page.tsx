@@ -1,0 +1,1 @@
+export default function PrivacyPolicyPage(){return <div className='mx-auto max-w-4xl px-6 py-12'><h1 className='text-4xl font-semibold'>Privacy Policy</h1><p className='mt-4 text-zinc-600'>We process account, inquiry, and listing interaction data to deliver platform services and prevent abuse.</p></div>}

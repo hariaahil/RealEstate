@@ -1,0 +1,1 @@
+export default function RefundPolicyPage(){return <div className='mx-auto max-w-4xl px-6 py-12'><h1 className='text-4xl font-semibold'>Refund Policy</h1><p className='mt-4 text-zinc-600'>Contact unlock payments are refundable only for verified payment duplication or failed unlock fulfillment.</p></div>}

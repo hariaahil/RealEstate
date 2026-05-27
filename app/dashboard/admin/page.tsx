@@ -1,13 +1,11 @@
+import { requireRole } from '@/lib/authz';
 import { redirect } from 'next/navigation';
-import { createServerSupabase } from '@/lib/supabaseClient';
 import { getAgents } from '@/services/agentService';
 import { getInquiries } from '@/services/inquiryService';
 import { getProperties } from '@/services/propertyService';
 import { Button } from '@/components/ui/button';
 
 export default async function AdminDashboardPage() {
-  const supabase = createServerSupabase();
-  const session = await supabase?.auth.getSession();
 
   if (!session?.data.session) {
     redirect('/login');

@@ -12,7 +12,6 @@ const navItems = [
   { href: '/properties', label: 'Properties' },
   { href: '/rent', label: 'Rentals' },
   { href: '/dashboard/agent', label: 'Agent Hub' },
-  { href: '/dashboard/admin', label: 'Admin Hub' },
 ];
 
 export function Navbar() {

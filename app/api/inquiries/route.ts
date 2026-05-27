@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseClient } from '@/lib/supabaseClient';
+import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 import { sendLeadNotification } from '@/services/notificationService';
 import type { Inquiry } from '@/types';
 
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     created_at: new Date().toISOString(),
   };
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     const fakeInquiry: Inquiry = {
       id: `inq-${Math.random().toString(36).slice(2, 8)}`,
       property_id: body.property_id,
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
   const agentId = request.nextUrl.searchParams.get('agent_id');
   const status = request.nextUrl.searchParams.get('status');
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return NextResponse.json({ inquiries: [] });
   }
 
@@ -81,7 +81,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: 'Missing inquiry id' }, { status: 400 });
   }
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return NextResponse.json({ error: 'Supabase not configured' }, { status: 503 });
   }
 

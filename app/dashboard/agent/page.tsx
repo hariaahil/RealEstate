@@ -1,14 +1,12 @@
+import { requireRole } from '@/lib/authz';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { createServerSupabase } from '@/lib/supabaseClient';
 import { getInquiries } from '@/services/inquiryService';
 import { getProperties } from '@/services/propertyService';
 import { Button } from '@/components/ui/button';
 import { InquiryStatusControl } from '@/components/inquiry/inquiry-status-control';
 
 export default async function AgentDashboardPage() {
-  const supabase = createServerSupabase();
-  const session = await supabase?.auth.getSession();
 
   if (!session?.data.session) {
     redirect('/login');
@@ -19,7 +17,7 @@ export default async function AgentDashboardPage() {
     redirect('/dashboard/admin');
   }
 
-  const agentId = session.data.session.user.id;
+  const agentId = auth.userId;
   const allProperties = await getProperties();
   const agentProperties = allProperties.filter((property) => property.agent_id === agentId);
   const agentLeads = await getInquiries(agentId);

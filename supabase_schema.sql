@@ -224,3 +224,39 @@ BEGIN
   (prop1, 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
   (prop3, 'https://www.youtube.com/embed/5qap5aO4i9A');
 END $$;
+
+-- ==========================================
+-- SECURE USER + PLATFORM SETTINGS MODEL
+-- ==========================================
+create table if not exists public.users (
+  id uuid primary key references auth.users(id) on delete cascade,
+  name text,
+  email text unique,
+  phone text,
+  avatar text,
+  role text not null default 'customer' check (role in ('customer','agent','admin')),
+  status text not null default 'active' check (status in ('active','blocked')),
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.platform_settings (
+  id uuid primary key default uuid_generate_v4(),
+  enable_google_login boolean not null default true,
+  enable_otp_login boolean not null default true,
+  enable_email_login boolean not null default true,
+  enable_customer_signup boolean not null default true,
+  enable_agent_signup boolean not null default false,
+  maintenance_mode boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table public.users enable row level security;
+alter table public.platform_settings enable row level security;
+
+create policy "users self read" on public.users for select using (auth.uid() = id);
+create policy "users self update limited" on public.users for update using (auth.uid() = id) with check (auth.uid() = id and role = (select role from public.users u where u.id = auth.uid()));
+create policy "admins manage users" on public.users for all using (exists (select 1 from public.users u where u.id = auth.uid() and u.role = 'admin'));
+
+create policy "admins read settings" on public.platform_settings for select using (exists (select 1 from public.users u where u.id = auth.uid() and u.role = 'admin'));
+create policy "admins update settings" on public.platform_settings for update using (exists (select 1 from public.users u where u.id = auth.uid() and u.role = 'admin'));
+create policy "admins insert settings" on public.platform_settings for insert with check (exists (select 1 from public.users u where u.id = auth.uid() and u.role = 'admin'));
