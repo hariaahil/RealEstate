@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseClient } from '@/lib/supabaseClient';
+import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { sendEmail } from '@/lib/email';
 
@@ -63,7 +63,7 @@ export async function PATCH(request: NextRequest, context: any) {
       return NextResponse.json({ error: 'Missing id or status' }, { status: 400 });
     }
 
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    if (!isSupabaseClientConfigured) {
       return NextResponse.json({ success: true, agent: { id, status } });
     }
 

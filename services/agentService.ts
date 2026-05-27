@@ -1,8 +1,8 @@
-import { supabaseClient } from '@/lib/supabaseClient';
+import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 import type { Agent } from '@/types';
 
 export async function getAgents(): Promise<Agent[]> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     console.warn('Supabase URL not configured. Returning empty array.');
     return [];
   }
@@ -17,7 +17,7 @@ export async function getAgents(): Promise<Agent[]> {
 }
 
 export async function getAgentById(agentId: string): Promise<Agent | null> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return null;
   }
 
