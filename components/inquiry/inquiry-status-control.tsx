@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { useState } from 'react';
 import type { Inquiry, InquiryStatus } from '@/types';
 import { Button } from '@/components/ui/button';
