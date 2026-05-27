@@ -1,4 +1,4 @@
-# HydPropertyHub
+# Hyd PropertyHub
 
 HydPropertyHub is a premium Hyderabad real estate platform built with Next.js 15, TypeScript, Tailwind CSS, Shadcn-inspired UI, Supabase auth and database integration, and Cloudinary-ready image handling.
 
