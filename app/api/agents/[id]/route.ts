@@ -31,6 +31,7 @@ async function syncAgentRole(agent: any, status: string) {
 
   if (status === 'approved') {
     await supabaseAdmin.auth.admin.updateUserById(userId, {
+      app_metadata: { role: 'agent' },
       user_metadata: { role: 'agent' },
     });
   }

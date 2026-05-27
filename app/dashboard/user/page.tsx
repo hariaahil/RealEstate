@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { getContactUnlocks } from '@/services/rentalService';
 import Link from 'next/link';
-import { PropertyCard } from '@/components/property-card';
 import { RecentlyViewed } from '@/components/recently-viewed';
+import { ProfileDetailsForm } from '@/components/profile-details-form';
 
 export default async function UserDashboardPage() {
   const supabase = createServerSupabase();
@@ -14,6 +14,8 @@ export default async function UserDashboardPage() {
   }
 
   const userId = session.data.session.user.id;
+  const userEmail = session.data.session.user.email ?? 'Not available';
+  const fullName = (session.data.session.user.user_metadata?.full_name as string | undefined) ?? '';
   const unlocks = await getContactUnlocks(userId);
 
   return (
@@ -40,6 +42,12 @@ export default async function UserDashboardPage() {
             <p className="mt-4 text-4xl font-semibold text-zinc-950">Buyer</p>
             <p className="mt-2 text-sm text-zinc-600">Looking for properties</p>
           </div>
+        </div>
+
+        <div className="rounded-[2rem] bg-white p-6 shadow-soft">
+          <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">Profile Details</p>
+          <p className="mt-4 text-sm text-zinc-600">Email: <span className="font-medium text-zinc-900">{userEmail}</span></p>
+          <ProfileDetailsForm initialName={fullName} />
         </div>
 
         <div className="rounded-[2rem] bg-white p-8 shadow-soft">

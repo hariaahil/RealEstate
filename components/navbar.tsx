@@ -1,5 +1,7 @@
 'use client';
 
+import { getUserRole } from '@/lib/auth';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -15,8 +17,8 @@ const navItems = [
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user } = useAuth();
-  const role = user?.app_metadata?.role as string | undefined;
+  const { user, signOut } = useAuth();
+  const role = getUserRole(user);
 
   const dashboardNavItems = [
     ...(role === 'agent' || role === 'admin' ? [{ href: '/dashboard/agent', label: 'Agent Hub' }] : []),
@@ -24,6 +26,8 @@ export function Navbar() {
   ];
 
   const visibleNavItems = [...navItems, ...dashboardNavItems];
+  const profileHref = role === 'admin' ? '/dashboard/admin' : role === 'agent' ? '/dashboard/agent' : '/dashboard/user';
+  const profileLabel = user?.email?.split('@')[0] || 'My Profile';
 
   return (
     <motion.header
@@ -56,9 +60,23 @@ export function Navbar() {
           <Link href="/properties" className="inline-flex h-9 items-center justify-center rounded-full border border-zinc-200 px-3 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-10 sm:px-4 sm:text-sm">
             View Listings
           </Link>
-          <Link href="/login" className="inline-flex h-9 items-center justify-center rounded-full border border-zinc-200 px-3 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-10 sm:px-4 sm:text-sm">
-            Login
-          </Link>
+          {user ? (
+            <>
+              <Link href={profileHref} className="inline-flex h-9 items-center justify-center rounded-full border border-zinc-200 px-3 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-10 sm:px-4 sm:text-sm">
+                {profileLabel}
+              </Link>
+              <button
+                onClick={() => signOut()}
+                className="inline-flex h-9 items-center justify-center rounded-full border border-zinc-200 px-3 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-10 sm:px-4 sm:text-sm"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className="inline-flex h-9 items-center justify-center rounded-full border border-zinc-200 px-3 text-xs font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:h-10 sm:px-4 sm:text-sm">
+              Login
+            </Link>
+          )}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 lg:hidden"
@@ -94,6 +112,14 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
+            {user ? (
+              <>
+                <Link href={profileHref} onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-4 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900">{profileLabel}</Link>
+                <button onClick={() => { setMobileMenuOpen(false); void signOut(); }} className="rounded-lg px-4 py-3 text-left text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900">Logout</button>
+              </>
+            ) : (
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-4 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900">Login</Link>
+            )}
             <Badge variant="success" className="mt-2 w-fit">Trusted Agents</Badge>
           </nav>
         </motion.div>
