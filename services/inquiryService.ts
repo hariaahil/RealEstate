@@ -1,8 +1,8 @@
-import { supabaseClient } from '@/lib/supabaseClient';
+import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 import type { Inquiry, InquiryStatus } from '@/types';
 
 export async function saveInquiry(inquiry: Omit<Inquiry, 'id' | 'created_at'>): Promise<Inquiry | null> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return {
       ...inquiry,
       id: `inq-${Math.random().toString(36).slice(2, 8)}`,
@@ -20,7 +20,7 @@ export async function saveInquiry(inquiry: Omit<Inquiry, 'id' | 'created_at'>): 
 }
 
 export async function getInquiries(agentId?: string, status?: InquiryStatus): Promise<Inquiry[]> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return [];
   }
 
@@ -44,7 +44,7 @@ export async function getInquiries(agentId?: string, status?: InquiryStatus): Pr
 }
 
 export async function updateInquiryStatus(inquiryId: string, status: InquiryStatus): Promise<Inquiry | null> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return null;
   }
 
@@ -64,7 +64,7 @@ export async function updateInquiryStatus(inquiryId: string, status: InquiryStat
 }
 
 export async function assignInquiryAgent(inquiryId: string, agentId: string): Promise<Inquiry | null> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return null;
   }
 

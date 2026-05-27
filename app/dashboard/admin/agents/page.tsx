@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabaseClient';
 import { getAgents } from '@/services/agentService';
 import { AgentApprovalControl } from '@/components/admin/agent-approval-control';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default async function AdminAgentsPage() {
   const supabase = createServerSupabase();
@@ -28,7 +28,7 @@ export default async function AdminAgentsPage() {
               <p className="text-sm uppercase tracking-[0.3em] text-brand-600">Agent applications</p>
               <h1 className="mt-3 text-4xl font-semibold text-zinc-950">Review and approve agent applications.</h1>
             </div>
-            <Button variant="outline" onClick={() => (window.location.href = '/dashboard/admin')}>Return to dashboard</Button>
+            <Link className="inline-flex h-11 items-center rounded-full border border-zinc-200 px-5 text-sm font-medium" href="/dashboard/admin">Return to dashboard</Link>
           </div>
         </div>
 

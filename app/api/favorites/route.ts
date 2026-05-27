@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseClient } from '@/lib/supabaseClient';
+import { isSupabaseClientConfigured, supabaseClient } from '@/lib/supabaseClient';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     property_id: body.property_id,
   };
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return NextResponse.json({ success: true, favorite: { id: `fav-${Math.random().toString(36).slice(2, 8)}`, ...payload } });
   }
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const userId = request.nextUrl.searchParams.get('user_id');
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return NextResponse.json({ favorites: [] });
   }
 
@@ -49,7 +49,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'Missing property_id' }, { status: 400 });
   }
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isSupabaseClientConfigured) {
     return NextResponse.json({ success: true });
   }
 
