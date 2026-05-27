@@ -274,6 +274,14 @@ export async function getCurrentUserProfile() {
 }
 
 /**
+ * Get current user's role
+ */
+export async function getUserRole(): Promise<string | null> {
+  const { profile } = await getCurrentUserProfile();
+  return profile?.role || null;
+}
+
+/**
  * Check if user is admin
  */
 export async function isAdmin(): Promise<boolean> {
